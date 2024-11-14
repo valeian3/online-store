@@ -4,15 +4,15 @@ import { useQuery } from '@tanstack/react-query'
 // context
 import { AuthContext } from 'contexts/AuthProvider'
 
-import { products, userAuthProvider } from 'lib/api'
+import { categories, products } from 'lib/api'
 
 // constants
-import { itemsKeys, userKeys } from 'lib/constants'
+import { categoryKeys, productKeys } from 'lib/constants'
 
 import type {
-  IGetInventoryItems,
-  IGetInventoryItem,
-  IUserResponseMe,
+  IProduct,
+  IProductsByCategory,
+  IProductsCategoryList,
 } from 'lib/types'
 
 export const useAuth = () => {
@@ -54,40 +54,38 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
 export const usePageTitle = (title?: string) => {
   useEffect(() => {
     if (!title) {
-      window.document.title = 'Auth Example App'
+      window.document.title = 'King Online Store'
     } else {
-      window.document.title = `${title} - Auth Example App`
+      window.document.title = `${title} - King Online Store`
     }
   }, [title])
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useGetUser = (options: any) => {
-  return useQuery<IUserResponseMe>({
-    queryKey: userKeys.user,
-    queryFn: () => userAuthProvider.getUser(),
-    ...options,
-  })
-}
-
 // TODO: define type for query options
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useGetInventoryItems = (options: any) => {
-  return useQuery<IGetInventoryItems>({
-    queryKey: itemsKeys.all,
-    queryFn: () => products.getProducts(),
+export const useProductsCategoryList = (options: any) => {
+  return useQuery<IProductsCategoryList>({
+    queryKey: categoryKeys.all,
+    queryFn: () => categories.getProductsCategoryList(),
     ...options,
   })
 }
 
-export const useGetInventoryItem = (
-  id: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options: any
-) => {
-  return useQuery<IGetInventoryItem>({
-    queryKey: itemsKeys.detail(parseInt(id)),
-    queryFn: () => products.getProduct(id),
+// TODO: define type for response result
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useProductsByCategory = (category: string, options: any) => {
+  return useQuery<IProductsByCategory>({
+    queryKey: categoryKeys.productsList(category),
+    queryFn: () => categories.getProductsByCategory(category),
+    ...options,
+  })
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useProduct = (productId: number, options: any) => {
+  return useQuery<IProduct>({
+    queryKey: productKeys.detail(productId),
+    queryFn: () => products.getProduct(productId),
     ...options,
   })
 }

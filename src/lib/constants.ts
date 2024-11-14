@@ -10,16 +10,21 @@ export const urlParam = {
   redirectFrom: 'redirect-from',
 }
 
+// TODO: check if products is needed at all
 // query keys
-export const itemsKeys = {
-  all: ['items'] as const,
-  lists: () => [...itemsKeys.all, 'list'] as const,
-  // list: (filters: string) => [...itemsKeys.lists(), { filters }] as const,
-  details: () => [...itemsKeys.all, 'detail'] as const,
-  detail: (id: number) => [...itemsKeys.details(), id] as const,
+export const categoryKeys = {
+  all: ['categories'] as const,
+  // lists: () => [...itemsKeys.all, 'list'] as const,
+  // // list: (filters: string) => [...itemsKeys.lists(), { filters }] as const,
+  products: () => [...categoryKeys.all, 'products'] as const,
+  productsList: (categoryName: string) =>
+    [...categoryKeys.products(), categoryName] as const,
 }
 
-// query keys
-export const userKeys = {
-  user: ['user'] as const,
+export const productKeys = {
+  all: ['products'] as const,
+  // lists: () => [...itemsKeys.all, 'list'] as const,
+  // // list: (filters: string) => [...itemsKeys.lists(), { filters }] as const,
+  details: () => [...productKeys.all, 'detail'] as const,
+  detail: (id: number) => [...productKeys.details(), id] as const,
 }

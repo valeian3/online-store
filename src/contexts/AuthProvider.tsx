@@ -12,12 +12,10 @@ import { userAuthProvider } from 'lib/api'
 import { devUser } from 'lib/constants'
 
 import { ILoginUser, IRegisterUser, IUserWithRoles } from 'lib/types'
-import { useGetUser } from 'lib/hooks'
 
 interface AuthContextProps {
   isDev: boolean
   user: IUserWithRoles | null
-  isLoading: boolean
   signin: (credentials: ILoginUser) => Promise<void>
   signout: () => Promise<void>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,13 +31,7 @@ export const AuthProvider: FC<{
   children: ReactNode
   isDev: boolean
 }> = ({ children, isDev }) => {
-  const { data, isLoading } = useGetUser({
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
-    refetchInterval: 1000 * 30,
-    enabled: !isDev,
-  })
-  const [user, setUser] = useState<IUserWithRoles | null>(data)
+  const [user, setUser] = useState<IUserWithRoles | null>(null)
   console.log('user', user)
 
   useEffect(() => {
@@ -72,12 +64,12 @@ export const AuthProvider: FC<{
     () => ({
       isDev,
       user,
-      isLoading,
+
       signin,
       signout,
       register,
     }),
-    [isDev, isLoading, user]
+    [isDev, user]
   )
 
   return (

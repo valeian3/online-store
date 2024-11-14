@@ -10,12 +10,13 @@ if (!BASE_URL) {
   throw new Error('BASE_URL is not set in the environment variables')
 }
 
+// TODO: withCredentials not needed since this is public api
 export const apiInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
+  // withCredentials: true,
 })
 
 // Add a request interceptor
@@ -85,10 +86,25 @@ const products = {
     const res = await apiInstance.get('/products')
     return res.data
   },
-  async getProduct(id: string) {
+  async getProduct(id: number) {
     const res = await apiInstance.get(`products/${id}`)
     return res.data
   },
 }
 
-export { userAuthProvider, products }
+const categories = {
+  async getProductsCategories() {
+    const res = await apiInstance.get('/products/categories')
+    return res.data
+  },
+  async getProductsCategoryList(): Promise<string[]> {
+    const res = await apiInstance.get(`/products/category-list`)
+    return res.data
+  },
+  async getProductsByCategory(category: string) {
+    const res = await apiInstance.get(`/products/category/${category}`)
+    return res.data
+  },
+}
+
+export { userAuthProvider, products, categories }
