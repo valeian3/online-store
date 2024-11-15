@@ -17,8 +17,10 @@ export const categoryKeys = {
   // lists: () => [...itemsKeys.all, 'list'] as const,
   // // list: (filters: string) => [...itemsKeys.lists(), { filters }] as const,
   products: () => [...categoryKeys.all, 'products'] as const,
-  productsList: (categoryName: string) =>
-    [...categoryKeys.products(), categoryName] as const,
+  productsList: (
+    categoryName: string,
+    filters: { sortBy: string; order: string }
+  ) => [...categoryKeys.products(), categoryName, { filters }] as const,
 }
 
 export const productKeys = {

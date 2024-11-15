@@ -2,11 +2,30 @@ import React from 'react'
 
 interface SelectorProps {
   title?: string
-  list: { label: string; value: string }[]
+  list: { label: string; value: { sortBy: string; order: string } }[]
   helperText?: string
+  value: { sortBy: string; order: string }
+  onChange: (value: { sortBy: string; order: string }) => void
 }
 
-const Selector: React.FC<SelectorProps> = ({ title, list, helperText }) => {
+const Selector: React.FC<SelectorProps> = ({
+  title,
+  list,
+  helperText,
+  value,
+  onChange,
+}) => {
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = list.find(
+      (option) =>
+        option.value.sortBy === event.target.value.split('|')[0] &&
+        option.value.order === event.target.value.split('|')[1]
+    )
+    if (selectedOption) {
+      onChange(selectedOption.value)
+    }
+  }
+
   return (
     <div className="w-[200px]">
       {title && (
@@ -14,9 +33,16 @@ const Selector: React.FC<SelectorProps> = ({ title, list, helperText }) => {
       )}
 
       <div className="relative">
-        <select className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
-          {list.map((item: { label: string; value: string }, index: number) => (
-            <option key={index} value={item.value}>
+        <select
+          value={`${value.sortBy}|${value.order}`} // Set the current value
+          onChange={handleChange} // Handle change and update parent state
+          className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
+        >
+          {list.map((item, index) => (
+            <option
+              key={index}
+              value={`${item.value.sortBy}|${item.value.order}`}
+            >
               {item.label}
             </option>
           ))}
@@ -36,6 +62,7 @@ const Selector: React.FC<SelectorProps> = ({ title, list, helperText }) => {
           />
         </svg>
       </div>
+
       {helperText && (
         <p className="flex items-center mt-2 text-xs text-slate-500">
           <svg

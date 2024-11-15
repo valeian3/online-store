@@ -102,11 +102,21 @@ const categories = {
     const res = await apiInstance.get(`/products/category-list`)
     return res.data
   },
-  async getProductsByCategory(category: string) {
-    const res = await apiInstance.get(
-      `/products/category/${category}?sortBy=price&order=desc`
-    )
-    return res.data
+  async getProductsByCategory(
+    category: string,
+    filters: { sortBy: string; order: string }
+  ) {
+    const { sortBy, order } = filters
+
+    if (sortBy === '' && order === '') {
+      const res = await apiInstance.get(`/products/category/${category}`)
+      return res.data
+    } else {
+      const res = await apiInstance.get(
+        `/products/category/${category}?sortBy=${sortBy}&order=${order}`
+      )
+      return res.data
+    }
   },
 }
 

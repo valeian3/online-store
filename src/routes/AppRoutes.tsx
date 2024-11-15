@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
 
 // layout
-import AppLayout from 'layout/AppLayout'
+import MainLayout from 'layout/MainLayout'
 
 // pages
-import Home from 'pages/Home'
+import Landing from 'pages/Landing'
 import Products from 'pages/Products'
 import Product from 'pages/Product'
 import Login from 'pages/Login'
@@ -14,8 +14,8 @@ import PageNotFound from 'pages/PageNotFound'
 function AppRoutes() {
   return (
     <Routes>
-      <Route element={<AppLayout />}>
-        <Route path="/" element={<Home />} />
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Landing />} />
         <Route path="/:categoryName" element={<Products />} />
         <Route path="/:categoryName/:productName" element={<Product />} />
         <Route path="/login" element={<Login />} />

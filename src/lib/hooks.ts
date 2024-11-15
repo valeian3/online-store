@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
@@ -62,7 +63,6 @@ export const usePageTitle = (title?: string) => {
 }
 
 // TODO: define type for query options
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useProductsCategoryList = (options: any) => {
   return useQuery<IProductsCategoryList>({
     queryKey: categoryKeys.all,
@@ -72,16 +72,18 @@ export const useProductsCategoryList = (options: any) => {
 }
 
 // TODO: define type for response result
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useProductsByCategory = (category: string, options: any) => {
+export const useProductsByCategory = (
+  category: string,
+  options: any,
+  filters: { sortBy: string; order: string }
+) => {
   return useQuery<IProductsByCategory>({
-    queryKey: categoryKeys.productsList(category),
-    queryFn: () => categories.getProductsByCategory(category),
+    queryKey: categoryKeys.productsList(category, filters),
+    queryFn: () => categories.getProductsByCategory(category, filters),
     ...options,
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useProduct = (productId: number, options: any) => {
   return useQuery<IProduct>({
     queryKey: productKeys.detail(productId),

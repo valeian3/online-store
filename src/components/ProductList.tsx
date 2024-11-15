@@ -1,15 +1,22 @@
 import React from 'react'
 import ProductCard from 'components/ProductCard'
 
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import { useProductsByCategory } from 'lib/hooks'
 import { formatProductName } from 'lib/utils'
 
 const ProductList: React.FC = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const sortBy = searchParams.get('sortBy') || ''
+  const order = searchParams.get('order') || ''
   const { categoryName = '' } = useParams<{ categoryName: string }>()
-  const { data, isLoading, isError } = useProductsByCategory(categoryName, {})
+  const { data, isLoading, isError } = useProductsByCategory(
+    categoryName,
+    {},
+    { sortBy, order }
+  )
 
   if (isLoading) return <>fetching products data...</>
   if (isError) return <>error fetching products data</>
