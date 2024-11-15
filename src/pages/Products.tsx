@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import Selector from 'components/Selector'
 import ProductList from 'components/ProductList'
 import SidebarFilters from 'components/SidebarFilters'
-import Breadcrumbs from 'components/BreadCrumbs'
+import Breadcrumbs from 'components/Breadcrumbs'
 
 function Products() {
   const { categoryName = '' } = useParams<{ categoryName: string }>()

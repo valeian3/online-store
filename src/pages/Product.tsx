@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 
 import { useProduct } from 'lib/hooks'
 import { extractProductId } from 'lib/utils'
-import Breadcrumbs from 'components/BreadCrumbs'
+import Breadcrumbs from 'components/Breadcrumbs'
 
 function Product() {
   const { productName = '' } = useParams<{ productName: string }>()
