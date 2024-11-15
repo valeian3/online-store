@@ -11,23 +11,23 @@ function Header() {
     navigate(`register`)
   }
   return (
-    <header className="h-16 z-10 shadow-md">
-      <nav className="bg-white border-gray-200 px-4 laptop:px-6 py-2.5 dark:bg-gray-800">
-        <div className="flex justify-between items-center mx-auto max-w-screen-xl">
+    <header className="h-24 z-10 shadow-md">
+      <nav className="h-full bg-white border-gray-200 px-4 laptop:px-6 py-2.5 dark:bg-gray-800">
+        <div className="h-full flex justify-between items-center">
           <a href="/" className="flex items-center">
-            <p className="text-xl font-semibold dark:text-white">
+            <p className="text-3xl font-semibold dark:text-white">
               King Online Shop
             </p>
           </a>
           <div className="flex items-center laptop:order-2">
             <button
-              className="hidden tablet:block text-gray-800 dark:text-white hover:bg-gray-50 font-medium rounded-lg text-sm px-4 laptop:px-5 py-2 laptop:py-2.5 mr-2 dark:hover:bg-gray-700"
+              className="hidden tablet:block text-gray-800 dark:text-white hover:text-primary-400 font-medium rounded-lg text-lg px-4 laptop:px-5 py-2 laptop:py-2.5 mr-2 dark:hover:bg-gray-700"
               onClick={handleOpenLoginPage}
             >
               Log in
             </button>
             <button
-              className="hidden tablet:block text-white bg-primary-700 hover:bg-primary-800 font-medium rounded-lg text-sm px-4 laptop:px-5 py-2 laptop:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700  "
+              className="hidden tablet:block text-white bg-primary-700 hover:bg-primary-400 font-medium rounded-lg text-lg px-4 laptop:px-5 py-2 laptop:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700  "
               onClick={handleOpenRegisterPage}
             >
               Register

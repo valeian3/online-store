@@ -1,17 +1,21 @@
 import { useParams } from 'react-router-dom'
 
 import { useProduct } from 'lib/hooks'
+import { extractProductId } from 'lib/utils'
+import Breadcrumbs from 'components/BreadCrumbs'
 
 function Product() {
-  const { productId = '' } = useParams<{ productId: string }>()
-  const { data, isLoading, isError } = useProduct(parseInt(productId), {})
+  const { productName = '' } = useParams<{ productName: string }>()
+  const productId = extractProductId(productName)
+  const { data, isLoading, isError } = useProduct(productId, {})
 
   if (isLoading) return <>fetching product data...</>
   if (isError) return <>error fetching product data</>
 
   const { title, description, price, thumbnail } = data
   return (
-    <div className="container mx-auto p-4">
+    <div className="container p-4">
+      <Breadcrumbs />
       <h1 className="text-3xl font-semibold mb-4">{title}</h1>
       <div className="flex flex-col md:flex-row gap-8">
         <div className="md:w-1/3">

@@ -17,10 +17,7 @@ function AppRoutes() {
       <Route element={<AppLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/:categoryName" element={<Products />} />
-        <Route
-          path="/:categoryName/:productName/:productId"
-          element={<Product />}
-        />
+        <Route path="/:categoryName/:productName" element={<Product />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>
