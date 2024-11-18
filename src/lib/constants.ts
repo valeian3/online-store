@@ -32,6 +32,11 @@ export const productKeys = {
 export const searchKeys = {
   all: ['search'] as const,
   searched: () => [...searchKeys.all, 'products'] as const,
-  searchedList: (filters: { sortBy: string; order: string } | undefined) =>
-    [...searchKeys.searched(), { filters }] as const,
+  searchedList: (
+    product: string,
+    filters: {
+      sortBy: string | undefined
+      order: string | undefined
+    }
+  ) => [...searchKeys.searched(), product, { filters }] as const,
 }

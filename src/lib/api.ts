@@ -116,7 +116,7 @@ const categories = {
 const search = {
   async getSearchProduct(
     product: string,
-    params: { sortBy: string; order: string } | undefined
+    params: { sortBy: string | undefined; order: string | undefined }
   ) {
     const res = await apiInstance.get('/products/search', {
       params: { q: product, ...params },

@@ -99,15 +99,11 @@ export const useProduct = (productId: number, options: any) => {
 export const useSearchProducts = (
   product: string,
   options: any,
-  filters: { sortBy: string; order: string }
+  filters: { sortBy: string | undefined; order: string | undefined }
 ) => {
-  const tempFilters = removeEmptyValues(filters)
-  // TODO: put this into func
-  const params = Object.keys(tempFilters).length ? tempFilters : undefined
-
   return useQuery<IProductsByCategory>({
-    queryKey: searchKeys.searchedList(params),
-    queryFn: () => search.getSearchProduct(product, params),
+    queryKey: searchKeys.searchedList(product, filters),
+    queryFn: () => search.getSearchProduct(product, filters),
     ...options,
   })
 }

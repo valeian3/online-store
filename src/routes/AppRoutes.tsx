@@ -17,10 +17,10 @@ function AppRoutes() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Landing />} />
+        <Route path="/search" element={<SearchProducts />} />
+        <Route path="/search/:productName" element={<Product />} />
         <Route path="/:categoryName" element={<Products />} />
         <Route path="/:categoryName/:productName" element={<Product />} />
-        <Route path="/search/:searchProduct" element={<SearchProducts />} />
-        <Route path="/search/product/:productName" element={<Product />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>

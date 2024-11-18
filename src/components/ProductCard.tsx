@@ -15,7 +15,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const handleCardClick = (productId: number, productName: string) => {
     const formattedName = formatProductName(productName, productId)
-    if (categoryName === '') navigate(`/search/product/${formattedName}`)
+    if (categoryName === '') navigate(`/search/${formattedName}`)
     else navigate(`/${categoryName}/${formattedName}`)
   }
 

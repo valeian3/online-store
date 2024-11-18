@@ -1,44 +1,54 @@
 import React from 'react'
+import { useSearchParams } from 'react-router-dom'
 
-interface SelectorProps {
-  title?: string
-  list: { label: string; value: { sortBy: string; order: string } }[]
-  helperText?: string
-  value: { sortBy: string; order: string }
-  onChange: (value: { sortBy: string; order: string }) => void
-}
+// Sort options for the selector
+const sortOptions = [
+  { value: { sortBy: '', order: '' }, label: 'Sort by:' },
+  { value: { sortBy: 'price', order: 'desc' }, label: 'high-low' },
+  { value: { sortBy: 'price', order: 'asc' }, label: 'low-high' },
+  { value: { sortBy: 'title', order: 'desc' }, label: 'Title Z to A' },
+  { value: { sortBy: 'title', order: 'asc' }, label: 'Title A to Z' },
+]
 
-const Selector: React.FC<SelectorProps> = ({
-  title,
-  list,
-  helperText,
-  value,
-  onChange,
-}) => {
+const Selector: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const order = searchParams.get('order') || undefined
+  const sortBy = searchParams.get('sortBy') || undefined
+
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOption = list.find(
+    const selectedOption = sortOptions.find(
       (option) =>
         option.value.sortBy === event.target.value.split('|')[0] &&
         option.value.order === event.target.value.split('|')[1]
     )
     if (selectedOption) {
-      onChange(selectedOption.value)
+      const newSearchParams = new URLSearchParams(searchParams)
+
+      if (
+        selectedOption.value.sortBy === '' &&
+        selectedOption.value.order === ''
+      ) {
+        newSearchParams.delete('sortBy')
+        newSearchParams.delete('order')
+      } else {
+        newSearchParams.set('sortBy', selectedOption.value.sortBy)
+        newSearchParams.set('order', selectedOption.value.order)
+      }
+
+      setSearchParams(newSearchParams)
     }
   }
 
   return (
     <div className="w-[200px]">
-      {title && (
-        <label className="block mb-1 text-sm text-slate-800">{title}</label>
-      )}
-
       <div className="relative">
         <select
-          value={`${value.sortBy}|${value.order}`} // Set the current value
-          onChange={handleChange} // Handle change and update parent state
+          value={`${sortBy}|${order}`}
+          onChange={handleChange}
           className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
         >
-          {list.map((item, index) => (
+          {sortOptions.map((item, index) => (
             <option
               key={index}
               value={`${item.value.sortBy}|${item.value.order}`}
@@ -62,24 +72,6 @@ const Selector: React.FC<SelectorProps> = ({
           />
         </svg>
       </div>
-
-      {helperText && (
-        <p className="flex items-center mt-2 text-xs text-slate-500">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-5 h-5 mr-2"
-          >
-            <path
-              fillRule="evenodd"
-              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-          {helperText}
-        </p>
-      )}
     </div>
   )
 }
