@@ -1,39 +1,17 @@
 import React from 'react'
 import ProductCard from 'components/ProductCard'
 
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import type { IProduct } from 'lib/types'
 
-import { useProductsByCategory } from 'lib/hooks'
-import { formatProductName } from 'lib/utils'
+interface ProductListProps {
+  products: IProduct[]
+}
 
-const ProductList: React.FC = () => {
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const sortBy = searchParams.get('sortBy') || ''
-  const order = searchParams.get('order') || ''
-  const { categoryName = '' } = useParams<{ categoryName: string }>()
-  const { data, isLoading, isError } = useProductsByCategory(
-    categoryName,
-    {},
-    { sortBy, order }
-  )
-
-  if (isLoading) return <>fetching products data...</>
-  if (isError) return <>error fetching products data</>
-
-  const handleCardClick = (productId: number, productName: string) => {
-    const formattedName = formatProductName(productName, productId)
-    navigate(`/${categoryName}/${formattedName}`)
-  }
-
+const ProductList: React.FC<ProductListProps> = ({ products }) => {
   return (
     <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {data.products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          onClick={handleCardClick}
-        />
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} />
       ))}
     </div>
   )

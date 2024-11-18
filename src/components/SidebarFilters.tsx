@@ -1,5 +1,7 @@
+import React, { useState } from 'react'
 // import { useProductsCategoryList } from 'lib/hooks'
 
+import Input from 'components/Input'
 import Sidebar from 'components/sidebar/Sidebar'
 
 // import SidebarItem from 'components/sidebar/SidebarItem'
@@ -9,6 +11,18 @@ function SidebarFilters() {
 
   //   if (isLoading) return <>fetching categories data...</>
   //   if (isError) return <>error fetching categories data</>
+
+  const [priceFrom, setPriceFrom] = useState<string>('')
+  const [priceTo, setPriceTo] = useState<string>('')
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
+    if (name === 'priceFrom') {
+      setPriceFrom(value)
+    } else if (name === 'priceTo') {
+      setPriceTo(value)
+    }
+  }
 
   return (
     <Sidebar>
@@ -27,6 +41,25 @@ function SidebarFilters() {
         </svg>
         Filters
       </h4>
+      <div className="px-4 pt-2">
+        <h4 className="font-semibold">Price</h4>
+        <div className="flex gap-4 mt-2">
+          <Input
+            id="price-from"
+            name="priceFrom"
+            placeholder="min"
+            value={priceFrom}
+            onChange={handleChange}
+          />
+          <Input
+            id="price-to"
+            name="priceTo"
+            placeholder="max"
+            value={priceTo}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
     </Sidebar>
   )
 }

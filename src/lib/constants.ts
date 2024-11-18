@@ -19,14 +19,19 @@ export const categoryKeys = {
   products: () => [...categoryKeys.all, 'products'] as const,
   productsList: (
     categoryName: string,
-    filters: { sortBy: string; order: string }
+    filters: { sortBy: string; order: string } | undefined
   ) => [...categoryKeys.products(), categoryName, { filters }] as const,
 }
 
 export const productKeys = {
   all: ['products'] as const,
-  // lists: () => [...itemsKeys.all, 'list'] as const,
-  // // list: (filters: string) => [...itemsKeys.lists(), { filters }] as const,
   details: () => [...productKeys.all, 'detail'] as const,
   detail: (id: number) => [...productKeys.details(), id] as const,
+}
+
+export const searchKeys = {
+  all: ['search'] as const,
+  searched: () => [...searchKeys.all, 'products'] as const,
+  searchedList: (filters: { sortBy: string; order: string } | undefined) =>
+    [...searchKeys.searched(), { filters }] as const,
 }

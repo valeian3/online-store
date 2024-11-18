@@ -5,16 +5,17 @@ import { useQuery } from '@tanstack/react-query'
 // context
 import { AuthContext } from 'contexts/AuthProvider'
 
-import { categories, products } from 'lib/api'
+import { categories, products, search } from 'lib/api'
 
 // constants
-import { categoryKeys, productKeys } from 'lib/constants'
+import { categoryKeys, productKeys, searchKeys } from 'lib/constants'
 
 import type {
   IProduct,
   IProductsByCategory,
   IProductsCategoryList,
 } from 'lib/types'
+import { removeEmptyValues } from './utils'
 
 export const useAuth = () => {
   const context = useContext(AuthContext)
@@ -77,9 +78,12 @@ export const useProductsByCategory = (
   options: any,
   filters: { sortBy: string; order: string }
 ) => {
+  const tempFilters = removeEmptyValues(filters)
+  const params = Object.keys(tempFilters).length ? tempFilters : undefined
+
   return useQuery<IProductsByCategory>({
-    queryKey: categoryKeys.productsList(category, filters),
-    queryFn: () => categories.getProductsByCategory(category, filters),
+    queryKey: categoryKeys.productsList(category, params),
+    queryFn: () => categories.getProductsByCategory(category, params),
     ...options,
   })
 }
@@ -88,6 +92,22 @@ export const useProduct = (productId: number, options: any) => {
   return useQuery<IProduct>({
     queryKey: productKeys.detail(productId),
     queryFn: () => products.getProduct(productId),
+    ...options,
+  })
+}
+
+export const useSearchProducts = (
+  product: string,
+  options: any,
+  filters: { sortBy: string; order: string }
+) => {
+  const tempFilters = removeEmptyValues(filters)
+  // TODO: put this into func
+  const params = Object.keys(tempFilters).length ? tempFilters : undefined
+
+  return useQuery<IProductsByCategory>({
+    queryKey: searchKeys.searchedList(params),
+    queryFn: () => search.getSearchProduct(product, params),
     ...options,
   })
 }

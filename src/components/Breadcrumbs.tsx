@@ -12,22 +12,24 @@ const Breadcrumbs: React.FC = () => {
     .split('/')
     .filter((segment) => segment !== '')
 
-  const breadcrumbs = pathSegments.map((segment, index) => {
-    const path = `/${pathSegments.slice(0, index + 1).join('/')}`
-    let label = segment.replace(/-/g, ' ').toUpperCase()
+  const breadcrumbs = pathSegments
+    .filter((segment) => segment !== 'search' && segment !== 'product')
+    .map((segment, index) => {
+      const path = `/${pathSegments.slice(0, index + 1).join('/')}`
+      let label = segment.replace(/-/g, ' ').toUpperCase()
 
-    if (segment === categoryName) {
-      label = categoryName
-        ? categoryName.charAt(0).toUpperCase() + categoryName.slice(1)
-        : 'Category'
-    } else if (segment === productName) {
-      label = productName
-        ? productName.charAt(0).toUpperCase() + productName.slice(1)
-        : 'Product'
-    }
+      if (segment === categoryName) {
+        label = categoryName
+          ? categoryName.charAt(0).toUpperCase() + categoryName.slice(1)
+          : 'Category'
+      } else if (segment === productName) {
+        label = productName
+          ? productName.charAt(0).toUpperCase() + productName.slice(1)
+          : 'Product'
+      }
 
-    return { label, path }
-  })
+      return { label, path }
+    })
 
   return (
     <nav className="flex items-center space-x-2 text-sm">

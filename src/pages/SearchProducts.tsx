@@ -1,15 +1,13 @@
-import { useParams } from 'react-router-dom'
-import { useSearchParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 
+import { useSearchProducts } from 'lib/hooks'
+import SidebarLayout from 'layout/SidebarLayout'
+import SidebarFilters from 'components/SidebarFilters'
 import Selector from 'components/Selector'
 import ProductList from 'components/ProductList'
-import SidebarFilters from 'components/SidebarFilters'
-import SidebarLayout from 'layout/SidebarLayout'
 
-import { useProductsByCategory } from 'lib/hooks'
-
-export default function Products() {
-  const { categoryName = '' } = useParams<{ categoryName: string }>()
+function SearchProducts() {
+  const { searchProduct = '' } = useParams<{ searchProduct: string }>()
 
   // Hook for working with the query params
   const [searchParams, setSearchParams] = useSearchParams()
@@ -17,8 +15,8 @@ export default function Products() {
   const sortBy = searchParams.get('sortBy') || ''
   const order = searchParams.get('order') || ''
 
-  const { data, isLoading, isError } = useProductsByCategory(
-    categoryName,
+  const { data, isLoading, isError } = useSearchProducts(
+    searchProduct,
     {},
     { sortBy, order }
   )
@@ -52,10 +50,11 @@ export default function Products() {
 
   if (isLoading) return <>fetching category products data...</>
   if (isError) return <>error fetching category products data</>
-
   return (
     <SidebarLayout sidebar={<SidebarFilters />}>
-      <h1 className="text-2xl font-bold mb-6">Category: {categoryName}</h1>
+      <h1 className="text-2xl font-bold mb-6">
+        Search product: {searchProduct}
+      </h1>
       <Selector
         list={sortOptions}
         value={{ sortBy, order }}
@@ -65,3 +64,5 @@ export default function Products() {
     </SidebarLayout>
   )
 }
+
+export default SearchProducts

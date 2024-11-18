@@ -104,20 +104,25 @@ const categories = {
   },
   async getProductsByCategory(
     category: string,
-    filters: { sortBy: string; order: string }
+    params: { sortBy: string; order: string } | undefined
   ) {
-    const { sortBy, order } = filters
-
-    if (sortBy === '' && order === '') {
-      const res = await apiInstance.get(`/products/category/${category}`)
-      return res.data
-    } else {
-      const res = await apiInstance.get(
-        `/products/category/${category}?sortBy=${sortBy}&order=${order}`
-      )
-      return res.data
-    }
+    const res = await apiInstance.get(`/products/category/${category}`, {
+      params,
+    })
+    return res.data
   },
 }
 
-export { userAuthProvider, products, categories }
+const search = {
+  async getSearchProduct(
+    product: string,
+    params: { sortBy: string; order: string } | undefined
+  ) {
+    const res = await apiInstance.get('/products/search', {
+      params: { q: product, ...params },
+    })
+    return res.data
+  },
+}
+
+export { userAuthProvider, products, categories, search }
