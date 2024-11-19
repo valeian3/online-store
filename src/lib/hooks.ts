@@ -54,7 +54,7 @@ export const usePageTitle = (title?: string) => {
     if (!title) {
       window.document.title = 'King Online Store'
     } else {
-      window.document.title = `${title} - King Online Store`
+      window.document.title = title
     }
   }, [title])
 }

@@ -5,10 +5,15 @@ import ProductList from 'components/ProductList'
 import SidebarFilters from 'components/SidebarFilters'
 import SidebarLayout from 'layout/SidebarLayout'
 
-import { useParsedSearchParams, useProductsByCategory } from 'lib/hooks'
+import {
+  usePageTitle,
+  useParsedSearchParams,
+  useProductsByCategory,
+} from 'lib/hooks'
 
 export default function CategoryProducts() {
   const { categoryName = '' } = useParams<{ categoryName: string }>()
+  usePageTitle(categoryName)
 
   const parsedParams = useParsedSearchParams()
 

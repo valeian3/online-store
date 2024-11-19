@@ -1,7 +1,11 @@
 import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useParsedSearchParams, useSearchProducts } from 'lib/hooks'
+import {
+  usePageTitle,
+  useParsedSearchParams,
+  useSearchProducts,
+} from 'lib/hooks'
 
 import SidebarLayout from 'layout/SidebarLayout'
 
@@ -14,6 +18,8 @@ function SearchProducts() {
 
   const parsedParams = useParsedSearchParams()
   const searchValue = useMemo(() => parsedParams.q, [parsedParams.q])
+
+  usePageTitle(`Search result for: '${searchValue}'`)
 
   const { data, isLoading, isError } = useSearchProducts({}, parsedParams)
 

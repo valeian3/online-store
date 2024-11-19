@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import { useProduct } from 'lib/hooks'
+import { usePageTitle, useProduct } from 'lib/hooks'
 import { extractProductId } from 'lib/utils'
 import Breadcrumbs from 'components/Breadcrumbs'
 
@@ -8,13 +8,15 @@ function Product() {
   const { productName = '' } = useParams<{ productName: string }>()
   const productId = extractProductId(productName)
   const { data, isLoading, isError } = useProduct(productId, {})
+  usePageTitle(data?.title)
 
   if (isLoading) return <>fetching product data...</>
   if (isError) return <>error fetching product data</>
 
   const { title, description, price, thumbnail } = data
+
   return (
-    <div className="container p-4">
+    <div className="p-4 w-full grow">
       <Breadcrumbs />
       <h1 className="text-3xl font-semibold mb-4">{title}</h1>
       <div className="flex flex-col md:flex-row gap-8">
