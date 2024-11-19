@@ -32,7 +32,7 @@ export const AuthProvider: FC<{
   isDev: boolean
 }> = ({ children, isDev }) => {
   const [user, setUser] = useState<IUserWithRoles | null>(null)
-  console.log('user', user)
+  // console.log('user', user)
 
   useEffect(() => {
     if (isDev) setUser(devUser)

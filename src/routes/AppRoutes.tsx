@@ -5,7 +5,7 @@ import MainLayout from 'layout/MainLayout'
 
 // pages
 import Landing from 'pages/Landing'
-import Products from 'pages/Products'
+import CategoryProducts from 'pages/CategoryProducts'
 import Product from 'pages/Product'
 import SearchProducts from 'pages/SearchProducts'
 import Login from 'pages/Login'
@@ -17,10 +17,13 @@ function AppRoutes() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Landing />} />
+
         <Route path="/search" element={<SearchProducts />} />
         <Route path="/search/:productName" element={<Product />} />
-        <Route path="/:categoryName" element={<Products />} />
+
+        <Route path="/:categoryName" element={<CategoryProducts />} />
         <Route path="/:categoryName/:productName" element={<Product />} />
+
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>

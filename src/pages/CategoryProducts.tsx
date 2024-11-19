@@ -1,24 +1,21 @@
 import { useParams } from 'react-router-dom'
-import { useSearchParams } from 'react-router-dom'
 
-import Selector from 'components/Selector'
+import Selector from 'components/SortDropdown'
 import ProductList from 'components/ProductList'
 import SidebarFilters from 'components/SidebarFilters'
 import SidebarLayout from 'layout/SidebarLayout'
 
-import { useProductsByCategory } from 'lib/hooks'
+import { useParsedSearchParams, useProductsByCategory } from 'lib/hooks'
 
-export default function Products() {
+export default function CategoryProducts() {
   const { categoryName = '' } = useParams<{ categoryName: string }>()
-  const [searchParams] = useSearchParams()
 
-  const order = searchParams.get('order') || ''
-  const sortBy = searchParams.get('sortBy') || ''
+  const parsedParams = useParsedSearchParams()
 
   const { data, isLoading, isError } = useProductsByCategory(
     categoryName,
     {},
-    { sortBy, order }
+    parsedParams
   )
 
   if (isLoading) return <>fetching category products data...</>

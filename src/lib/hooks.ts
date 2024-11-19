@@ -1,21 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
-// context
 import { AuthContext } from 'contexts/AuthProvider'
-
 import { categories, products, search } from 'lib/api'
-
-// constants
-import { categoryKeys, productKeys, searchKeys } from 'lib/constants'
+// TODO: check why is factory uppercase
+import { categoryKeys, productKeys, searchKeys } from 'lib/QueryKeyFactory'
 
 import type {
   IProduct,
   IProductsByCategory,
   IProductsCategoryList,
 } from 'lib/types'
-import { removeEmptyValues } from './utils'
 
 export const useAuth = () => {
   const context = useContext(AuthContext)
@@ -76,14 +73,11 @@ export const useProductsCategoryList = (options: any) => {
 export const useProductsByCategory = (
   category: string,
   options: any,
-  filters: { sortBy: string; order: string }
+  filters: Record<string, string>
 ) => {
-  const tempFilters = removeEmptyValues(filters)
-  const params = Object.keys(tempFilters).length ? tempFilters : undefined
-
   return useQuery<IProductsByCategory>({
-    queryKey: categoryKeys.productsList(category, params),
-    queryFn: () => categories.getProductsByCategory(category, params),
+    queryKey: categoryKeys.productsList(category, filters),
+    queryFn: () => categories.getProductsByCategory(category, filters),
     ...options,
   })
 }
@@ -97,13 +91,49 @@ export const useProduct = (productId: number, options: any) => {
 }
 
 export const useSearchProducts = (
-  product: string,
   options: any,
-  filters: { sortBy: string | undefined; order: string | undefined }
+  filters: Record<string, string>
 ) => {
   return useQuery<IProductsByCategory>({
-    queryKey: searchKeys.searchedList(product, filters),
-    queryFn: () => search.getSearchProduct(product, filters),
+    queryKey: searchKeys.searchedList(filters),
+    queryFn: () => search.getSearchProduct(filters),
     ...options,
   })
+}
+
+export const useParsedSearchParams = () => {
+  const [searchParams] = useSearchParams()
+
+  const paramsObject: Record<string, string> = {}
+
+  searchParams.forEach((value, key) => {
+    paramsObject[key] = value
+  })
+
+  return paramsObject
+}
+
+export const useSortParams = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const order = searchParams.get('order') || ''
+  const sortBy = searchParams.get('sortBy') || ''
+
+  const selectedValue = useMemo(() => `${sortBy}|${order}`, [sortBy, order])
+
+  const handleSortChange = (sortBy: string, order: string) => {
+    const newSearchParams = new URLSearchParams(searchParams)
+
+    if (!sortBy && !order) {
+      newSearchParams.delete('sortBy')
+      newSearchParams.delete('order')
+    } else {
+      newSearchParams.set('sortBy', sortBy)
+      newSearchParams.set('order', order)
+    }
+
+    setSearchParams(newSearchParams)
+  }
+
+  return { selectedValue, handleSortChange }
 }

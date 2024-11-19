@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, ChangeEvent, MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function Header() {
@@ -13,13 +13,11 @@ function Header() {
     navigate(`register`)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChangeInput = (e: any) => {
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSearch = async (e: any) => {
+  const handleSearch = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     navigate(`search/?q=${searchValue}`)
   }

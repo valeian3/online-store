@@ -1,27 +1,21 @@
-import { useEffect } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { useSearchProducts } from 'lib/hooks'
+import { useParsedSearchParams, useSearchProducts } from 'lib/hooks'
 
 import SidebarLayout from 'layout/SidebarLayout'
 
-import Selector from 'components/Selector'
+import Selector from 'components/SortDropdown'
 import ProductList from 'components/ProductList'
 import SidebarFilters from 'components/SidebarFilters'
 
 function SearchProducts() {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
 
-  const searchValue = searchParams.get('q') || ''
-  const order = searchParams.get('order') || undefined
-  const sortBy = searchParams.get('sortBy') || undefined
+  const parsedParams = useParsedSearchParams()
+  const searchValue = useMemo(() => parsedParams.q, [parsedParams.q])
 
-  const { data, isLoading, isError } = useSearchProducts(
-    searchValue,
-    {},
-    { sortBy, order }
-  )
+  const { data, isLoading, isError } = useSearchProducts({}, parsedParams)
 
   // guard against someone navigating to /search in url without param
   useEffect(() => {

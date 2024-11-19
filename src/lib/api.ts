@@ -92,7 +92,6 @@ const products = {
   },
 }
 
-// TODO: pass down options for sorting and filtering into endpoints
 const categories = {
   async getProductsCategories() {
     const res = await apiInstance.get('/products/categories')
@@ -104,7 +103,7 @@ const categories = {
   },
   async getProductsByCategory(
     category: string,
-    params: { sortBy: string; order: string } | undefined
+    params: Record<string, string>
   ) {
     const res = await apiInstance.get(`/products/category/${category}`, {
       params,
@@ -114,12 +113,9 @@ const categories = {
 }
 
 const search = {
-  async getSearchProduct(
-    product: string,
-    params: { sortBy: string | undefined; order: string | undefined }
-  ) {
+  async getSearchProduct(params: Record<string, string>) {
     const res = await apiInstance.get('/products/search', {
-      params: { q: product, ...params },
+      params,
     })
     return res.data
   },
