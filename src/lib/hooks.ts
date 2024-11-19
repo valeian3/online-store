@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { AuthContext } from 'contexts/AuthProvider'
 import { categories, products, search } from 'lib/api'
-// TODO: check why is factory uppercase
-import { categoryKeys, productKeys, searchKeys } from 'lib/QueryKeyFactory'
+import { categoryKeys, productKeys, searchKeys } from 'lib/query-key-factory'
 
 import type {
   IProduct,
