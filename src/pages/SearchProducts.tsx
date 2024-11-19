@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import {
   usePageTitle,
@@ -9,19 +9,26 @@ import {
 
 import SidebarLayout from 'layout/SidebarLayout'
 
-import SortDropdown from 'components/SortDropdown'
+import Pagination from 'components/Pagination'
 import ProductList from 'components/ProductList'
+import SortDropdown from 'components/SortDropdown'
 import SidebarFilters from 'components/SidebarFilters'
 
 function SearchProducts() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
   const parsedParams = useParsedSearchParams()
   const searchValue = useMemo(() => parsedParams.q, [parsedParams.q])
+  const currentPage = parseInt(searchParams.get('page') || '1')
 
   usePageTitle(`Search result for: '${searchValue}'`)
 
-  const { data, isLoading, isError } = useSearchProducts({}, parsedParams)
+  const { data, isLoading, isError } = useSearchProducts(
+    {},
+    parsedParams,
+    currentPage
+  )
 
   // guard against someone navigating to /search in url without param
   useEffect(() => {
@@ -37,6 +44,7 @@ function SearchProducts() {
       <h1 className="text-2xl font-bold mb-6">Search product: {searchValue}</h1>
       <SortDropdown />
       <ProductList products={data.products} />
+      <Pagination total={data.total} currentPage={currentPage} />
     </SidebarLayout>
   )
 }

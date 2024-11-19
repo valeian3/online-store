@@ -17,3 +17,5 @@ export const sortOptions = [
   { value: 'title|desc', label: 'Title Z to A' },
   { value: 'title|asc', label: 'Title A to Z' },
 ]
+
+export const numberOfItemsPerPage = 20

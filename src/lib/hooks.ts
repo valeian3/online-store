@@ -72,11 +72,17 @@ export const useProductsCategoryList = (options: any) => {
 export const useProductsByCategory = (
   category: string,
   options: any,
-  filters: Record<string, string>
+  filters: Record<string, string>,
+  page: number
 ) => {
   return useQuery<IProductsByCategory>({
-    queryKey: categoryKeys.productsList(category, filters),
-    queryFn: () => categories.getProductsByCategory(category, filters),
+    queryKey: categoryKeys.productsList(category, filters, page),
+    queryFn: () =>
+      categories.getProductsByCategory({
+        category,
+        params: filters,
+        page: page,
+      }),
     ...options,
   })
 }
@@ -91,11 +97,16 @@ export const useProduct = (productId: number, options: any) => {
 
 export const useSearchProducts = (
   options: any,
-  filters: Record<string, string>
+  filters: Record<string, string>,
+  page: number
 ) => {
   return useQuery<IProductsByCategory>({
-    queryKey: searchKeys.searchedList(filters),
-    queryFn: () => search.getSearchProduct(filters),
+    queryKey: searchKeys.searchedList(filters, page),
+    queryFn: () =>
+      search.getSearchProduct({
+        params: filters,
+        page: page,
+      }),
     ...options,
   })
 }

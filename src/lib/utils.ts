@@ -9,3 +9,12 @@ export const extractProductId = (formattedProductName: string): number => {
 export const formatProductName = (productName: string, productId: number) => {
   return `${productName.toLowerCase().replace(/\s+/g, '-')}-${productId}`
 }
+
+export function excludeKeys(
+  obj: { [s: string]: unknown } | ArrayLike<unknown>,
+  keysToExclude: string | string[]
+) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key]) => !keysToExclude.includes(key))
+  )
+}

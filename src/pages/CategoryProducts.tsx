@@ -1,8 +1,10 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 
-import SortDropdown from 'components/SortDropdown'
+import Pagination from 'components/Pagination'
 import ProductList from 'components/ProductList'
+import SortDropdown from 'components/SortDropdown'
 import SidebarFilters from 'components/SidebarFilters'
+
 import SidebarLayout from 'layout/SidebarLayout'
 
 import {
@@ -13,14 +15,17 @@ import {
 
 export default function CategoryProducts() {
   const { categoryName = '' } = useParams<{ categoryName: string }>()
-  usePageTitle(categoryName)
+  const [searchParams] = useSearchParams()
 
+  usePageTitle(categoryName)
   const parsedParams = useParsedSearchParams()
+  const currentPage = parseInt(searchParams.get('page') || '1')
 
   const { data, isLoading, isError } = useProductsByCategory(
     categoryName,
     {},
-    parsedParams
+    parsedParams,
+    currentPage
   )
 
   if (isLoading) return <>fetching category products data...</>
@@ -31,6 +36,7 @@ export default function CategoryProducts() {
       <h1 className="text-2xl font-bold mb-6">Category: {categoryName}</h1>
       <SortDropdown />
       <ProductList products={data.products} />
+      <Pagination total={data.total} currentPage={currentPage} />
     </SidebarLayout>
   )
 }

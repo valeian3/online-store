@@ -2,6 +2,9 @@ import axios from 'axios'
 
 // import { urlParam } from './constants'
 
+import { excludeKeys } from 'lib/utils'
+import { numberOfItemsPerPage } from 'lib/constants'
+
 import type { ILoginUser, IRegisterUser } from 'lib/types'
 
 const BASE_URL = import.meta.env.VITE_API_URL_DUMMY_JSON
@@ -101,21 +104,42 @@ const categories = {
     const res = await apiInstance.get(`/products/category-list`)
     return res.data
   },
-  async getProductsByCategory(
-    category: string,
+  async getProductsByCategory({
+    category,
+    params,
+    limit = numberOfItemsPerPage,
+    page = 1,
+  }: {
+    category: string
     params: Record<string, string>
-  ) {
+    limit?: number
+    page: number
+  }) {
+    const skip = page === 1 ? 0 : (page - 1) * limit
+    const filteredParams = excludeKeys(params, ['page'])
+
     const res = await apiInstance.get(`/products/category/${category}`, {
-      params,
+      params: { limit, skip, ...filteredParams },
     })
     return res.data
   },
 }
 
 const search = {
-  async getSearchProduct(params: Record<string, string>) {
+  async getSearchProduct({
+    params,
+    limit = numberOfItemsPerPage,
+    page = 1,
+  }: {
+    params: Record<string, string>
+    limit?: number
+    page: number
+  }) {
+    const skip = page === 1 ? 0 : (page - 1) * limit
+    const filteredParams = excludeKeys(params, ['page'])
+
     const res = await apiInstance.get('/products/search', {
-      params,
+      params: { limit, skip, ...filteredParams },
     })
     return res.data
   },
