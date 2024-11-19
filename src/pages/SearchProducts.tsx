@@ -5,7 +5,7 @@ import { useParsedSearchParams, useSearchProducts } from 'lib/hooks'
 
 import SidebarLayout from 'layout/SidebarLayout'
 
-import Selector from 'components/SortDropdown'
+import SortDropdown from 'components/SortDropdown'
 import ProductList from 'components/ProductList'
 import SidebarFilters from 'components/SidebarFilters'
 
@@ -29,7 +29,7 @@ function SearchProducts() {
   return (
     <SidebarLayout sidebar={<SidebarFilters />}>
       <h1 className="text-2xl font-bold mb-6">Search product: {searchValue}</h1>
-      <Selector />
+      <SortDropdown />
       <ProductList products={data.products} />
     </SidebarLayout>
   )

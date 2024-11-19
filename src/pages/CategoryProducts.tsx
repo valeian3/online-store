@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import Selector from 'components/SortDropdown'
+import SortDropdown from 'components/SortDropdown'
 import ProductList from 'components/ProductList'
 import SidebarFilters from 'components/SidebarFilters'
 import SidebarLayout from 'layout/SidebarLayout'
@@ -24,7 +24,7 @@ export default function CategoryProducts() {
   return (
     <SidebarLayout sidebar={<SidebarFilters />}>
       <h1 className="text-2xl font-bold mb-6">Category: {categoryName}</h1>
-      <Selector />
+      <SortDropdown />
       <ProductList products={data.products} />
     </SidebarLayout>
   )
