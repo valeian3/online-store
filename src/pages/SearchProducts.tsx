@@ -39,11 +39,14 @@ function SearchProducts() {
 
   return (
     <SidebarLayout sidebar={<SidebarFilters categories={categories} />}>
-      <h1 className="text-2xl font-bold mb-6">
-        Search product: {memoizedSearchValue}
-      </h1>
-      <SortDropdown />
-      <ProductList products={data.products} />
+      <div className="grow">
+        <h1 className="text-2xl font-bold mb-6">
+          Search product: {memoizedSearchValue}
+        </h1>
+        <SortDropdown />
+        <ProductList products={data.products} />
+      </div>
+
       <Pagination total={data.total} />
     </SidebarLayout>
   )

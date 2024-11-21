@@ -19,9 +19,11 @@ export default function CategoryProducts() {
 
   return (
     <SidebarLayout sidebar={<SidebarFilters />}>
-      <h1 className="text-2xl font-bold mb-6">Category: {categoryName}</h1>
-      <SortDropdown />
-      <ProductList products={data.products} />
+      <div className="grow">
+        <h1 className="text-2xl font-bold mb-6">Category: {categoryName}</h1>
+        <SortDropdown />
+        <ProductList products={data.products} />
+      </div>
       <Pagination total={data.total} />
     </SidebarLayout>
   )

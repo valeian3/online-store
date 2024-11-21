@@ -1,6 +1,12 @@
 import { useSearchParams } from 'react-router-dom'
 
-const SidebarItemFilter = ({ text }: { text: string }) => {
+const SidebarItemFilter = ({
+  text,
+  numOfProducts,
+}: {
+  text: string
+  numOfProducts: number
+}) => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const handleClick = () => {
@@ -11,12 +17,15 @@ const SidebarItemFilter = ({ text }: { text: string }) => {
   }
 
   return (
-    <p
-      className="flex py-3 px-4 cursor-pointer transition-colors border-t border-gray-300 hover:text-primary-600 text-gray-500"
+    <div
+      className="relative flex py-3 px-4 cursor-pointer transition-colors border-t border-gray-300 hover:text-primary-600 text-gray-500"
       onClick={handleClick}
     >
       <span>{text.toUpperCase()}</span>
-    </p>
+      <span className="absolute flex items-center justify-center right-2">
+        {numOfProducts}
+      </span>
+    </div>
   )
 }
 

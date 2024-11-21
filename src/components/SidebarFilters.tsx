@@ -4,12 +4,13 @@ import Input from 'components/Input'
 import Sidebar from 'components/sidebar/Sidebar'
 import SidebarItemFilter from 'components/sidebar/SidebarItemFilter'
 
-import type { IProductsCategoryList } from 'lib/types'
-
 function SidebarFilters({
   categories,
 }: {
-  categories?: IProductsCategoryList
+  categories?: {
+    categoryName: string
+    numOfProductsInCategory: number
+  }[]
 }) {
   const [priceFrom, setPriceFrom] = useState<string>('')
   const [priceTo, setPriceTo] = useState<string>('')
@@ -77,7 +78,11 @@ function SidebarFilters({
             Categories
           </h4>
           {categories.map((item, index) => (
-            <SidebarItemFilter key={index} text={item} />
+            <SidebarItemFilter
+              key={index}
+              text={item.categoryName}
+              numOfProducts={item.numOfProductsInCategory}
+            />
           ))}
         </>
       )}

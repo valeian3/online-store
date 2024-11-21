@@ -178,17 +178,29 @@ export const useSortParams = () => {
 }
 
 // Custom hook to manage category list in sidebar
-export const useCategoryList = (productList: IProduct[]): string[] => {
+export const useCategoryList = (
+  productList: IProduct[]
+): {
+  categoryName: string
+  numOfProductsInCategory: number
+}[] => {
   const memoizedCategoryList = useMemo(() => {
-    const categorySet: Set<string> = new Set()
-
     if (!productList) return []
 
+    const categoryMap: Map<string, number> = new Map()
+
     productList.forEach((product) => {
-      categorySet.add(product.category)
+      const count = categoryMap.get(product.category) || 0
+      categoryMap.set(product.category, count + 1)
     })
 
-    return Array.from(categorySet)
+    return Array.from(
+      categoryMap,
+      ([categoryName, numOfProductsInCategory]) => ({
+        categoryName,
+        numOfProductsInCategory,
+      })
+    )
   }, [productList])
 
   return memoizedCategoryList
