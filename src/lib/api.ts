@@ -124,7 +124,14 @@ const categories = {
 }
 
 const search = {
-  async getSearchProduct({
+  async getSearchProduct({ params }: { params: Record<string, string> }) {
+    const { q: searchValue } = params
+    const res = await apiInstance.get('/products/search', {
+      params: { q: searchValue },
+    })
+    return res.data
+  },
+  async getSearchProductWithFilters({
     params,
     limit = numberOfItemsPerPage,
     page = 1,
@@ -137,17 +144,6 @@ const search = {
 
     const res = await apiInstance.get('/products/search', {
       params: { limit, skip, ...params },
-    })
-    return res.data
-  },
-  async getSearchProductWithoutFilters({
-    params,
-  }: {
-    params: Record<string, string>
-  }) {
-    const { q: searchValue } = params
-    const res = await apiInstance.get('/products/search', {
-      params: { q: searchValue },
     })
     return res.data
   },

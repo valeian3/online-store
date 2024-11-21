@@ -96,19 +96,31 @@ export const useProduct = (productId: number, options: any) => {
   })
 }
 
-export const useSearchProducts = (options: any) => {
+export const useSearchProducts = (): IProduct[] => {
+  const parsedParams = useParsedSearchParams()
+
+  const { data } = useQuery<IProductsByCategory>({
+    queryKey: searchKeys.searchedList({ ...parsedParams }),
+    queryFn: () => search.getSearchProduct({ params: parsedParams }),
+  })
+
+  if (data?.products) return data?.products
+  else return []
+}
+
+export const useSearchProductsWithFilters = (options: any) => {
   const [searchParams] = useSearchParams()
   const parsedParams = useParsedSearchParams()
   const currentPage = parseInt(searchParams.get('page') || '1')
   const category = searchParams.get('category')
 
   return useQuery<IProductsByCategory>({
-    queryKey: searchKeys.searchedList(
+    queryKey: searchKeys.searchedListWithFilters(
       { ...parsedParams, ...(category ? { category } : {}) },
       currentPage
     ),
     queryFn: async () => {
-      const res = await search.getSearchProduct({
+      const res = await search.getSearchProductWithFilters({
         params: parsedParams,
         page: currentPage,
       })
@@ -165,20 +177,9 @@ export const useSortParams = () => {
   return { memoizedSearchValue, handleSortChange }
 }
 
-// Custom hook to manage category list in filters
-export const useCategoryList = (): string[] => {
-  const [categoryList, setCategoryList] = useState<string[]>([])
-
-  const parsedParams = useParsedSearchParams()
-
-  const { data } = useQuery<IProductsByCategory>({
-    queryKey: searchKeys.searchedListWithoutFilters({ ...parsedParams }),
-    queryFn: () =>
-      search.getSearchProductWithoutFilters({ params: parsedParams }),
-  })
-
+// Custom hook to manage category list in sidebar
+export const useCategoryList = (productList: IProduct[]): string[] => {
   const memoizedCategoryList = useMemo(() => {
-    const productList = data?.products
     const categorySet: Set<string> = new Set()
 
     if (!productList) return []
@@ -188,11 +189,7 @@ export const useCategoryList = (): string[] => {
     })
 
     return Array.from(categorySet)
-  }, [data?.products])
+  }, [productList])
 
-  useEffect(() => {
-    setCategoryList(memoizedCategoryList)
-  }, [memoizedCategoryList])
-
-  return categoryList
+  return memoizedCategoryList
 }

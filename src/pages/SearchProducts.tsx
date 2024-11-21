@@ -6,6 +6,7 @@ import {
   usePageTitle,
   useParsedSearchParams,
   useSearchProducts,
+  useSearchProductsWithFilters,
 } from 'lib/hooks'
 
 import SidebarLayout from 'layout/SidebarLayout'
@@ -17,13 +18,17 @@ import SidebarFilters from 'components/SidebarFilters'
 
 function SearchProducts() {
   const navigate = useNavigate()
+
+  const productList = useSearchProducts()
+  const categories = useCategoryList(productList)
+  const { data, isLoading, isError } = useSearchProductsWithFilters({})
+
+  // TODO: improve setting title
   const parsedParams = useParsedSearchParams()
   const memoizedSearchValue = useMemo(() => parsedParams.q, [parsedParams.q])
   usePageTitle(`Search result for: '${memoizedSearchValue}'`)
-  const { data, isLoading, isError } = useSearchProducts({})
-  const categories = useCategoryList()
 
-  // guard against someone navigating to /search in url without param
+  // Guard against navigating to /search in url without param
   useEffect(() => {
     if (memoizedSearchValue === '') navigate('/')
     // eslint-disable-next-line react-hooks/exhaustive-deps
