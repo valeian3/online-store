@@ -8,6 +8,10 @@ export const devUser: IUserWithRoles = {
 
 export const urlParam = {
   redirectFrom: 'redirect-from',
+  page: 'page',
+  category: 'category',
+  minPrice: 'minPrice',
+  maxPrice: 'maxPrice',
 }
 
 export const sortOptions = [

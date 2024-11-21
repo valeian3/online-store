@@ -3,8 +3,10 @@ import { useContext, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
+import { urlParam } from 'lib/constants'
 import { AuthContext } from 'contexts/AuthProvider'
 import { categories, products, search } from 'lib/api'
+import { excludeKeys, filterProducts } from 'lib/utils'
 import { categoryKeys, productKeys, searchKeys } from 'lib/query-key-factory'
 
 import type {
@@ -69,19 +71,18 @@ export const useProductsCategoryList = (options: any) => {
 }
 
 // TODO: define type for response result
-export const useProductsByCategory = (
-  category: string,
-  options: any,
-  filters: Record<string, string>,
-  page: number
-) => {
+export const useProductsByCategory = (category: string, options: any) => {
+  const [searchParams] = useSearchParams()
+  const parsedParams = useParsedSearchParams()
+  const currentPage = parseInt(searchParams.get('page') || '1')
+
   return useQuery<IProductsByCategory>({
-    queryKey: categoryKeys.productsList(category, filters, page),
+    queryKey: categoryKeys.productsList(category, parsedParams, currentPage),
     queryFn: () =>
       categories.getProductsByCategory({
         category,
-        params: filters,
-        page: page,
+        params: parsedParams,
+        page: currentPage,
       }),
     ...options,
   })
@@ -95,24 +96,36 @@ export const useProduct = (productId: number, options: any) => {
   })
 }
 
-export const useSearchProducts = (
-  options: any,
-  filters: Record<string, string>,
-  page: number
-) => {
+export const useSearchProducts = (options: any) => {
+  const [searchParams] = useSearchParams()
+  const parsedParams = useParsedSearchParams()
+  const currentPage = parseInt(searchParams.get('page') || '1')
+  const category = searchParams.get('category')
+
   return useQuery<IProductsByCategory>({
-    queryKey: searchKeys.searchedList(filters, page),
-    queryFn: () =>
-      search.getSearchProduct({
-        params: filters,
-        page: page,
-      }),
+    queryKey: searchKeys.searchedList(
+      { ...parsedParams, ...(category ? { category } : {}) },
+      currentPage
+    ),
+    queryFn: async () => {
+      const res = await search.getSearchProduct({
+        params: parsedParams,
+        page: currentPage,
+      })
+
+      return filterProducts(res, {
+        ...(category ? { category } : {}),
+      })
+    },
+
     ...options,
   })
 }
 
-export const useParsedSearchParams = () => {
+// hook that separates params from api and util params used in application for filtering and etc.
+export const useParsedSearchParams = (): Record<string, string> => {
   const [searchParams] = useSearchParams()
+  const { page, category, minPrice, maxPrice } = urlParam
 
   const paramsObject: Record<string, string> = {}
 
@@ -120,16 +133,20 @@ export const useParsedSearchParams = () => {
     paramsObject[key] = value
   })
 
-  return paramsObject
+  return excludeKeys(paramsObject, [page, category, minPrice, maxPrice])
 }
 
+// Custom hook to manage and update sorting parameters in the URL search parameters
 export const useSortParams = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const order = searchParams.get('order') || ''
   const sortBy = searchParams.get('sortBy') || ''
 
-  const selectedValue = useMemo(() => `${sortBy}|${order}`, [sortBy, order])
+  const memoizedSearchValue = useMemo(
+    () => `${sortBy}|${order}`,
+    [sortBy, order]
+  )
 
   const handleSortChange = (sortBy: string, order: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
@@ -145,5 +162,37 @@ export const useSortParams = () => {
     setSearchParams(newSearchParams)
   }
 
-  return { selectedValue, handleSortChange }
+  return { memoizedSearchValue, handleSortChange }
+}
+
+// Custom hook to manage category list in filters
+export const useCategoryList = (): string[] => {
+  const [categoryList, setCategoryList] = useState<string[]>([])
+
+  const parsedParams = useParsedSearchParams()
+
+  const { data } = useQuery<IProductsByCategory>({
+    queryKey: searchKeys.searchedListWithoutFilters({ ...parsedParams }),
+    queryFn: () =>
+      search.getSearchProductWithoutFilters({ params: parsedParams }),
+  })
+
+  const memoizedCategoryList = useMemo(() => {
+    const productList = data?.products
+    const categorySet: Set<string> = new Set()
+
+    if (!productList) return []
+
+    productList.forEach((product) => {
+      categorySet.add(product.category)
+    })
+
+    return Array.from(categorySet)
+  }, [data?.products])
+
+  useEffect(() => {
+    setCategoryList(memoizedCategoryList)
+  }, [memoizedCategoryList])
+
+  return categoryList
 }

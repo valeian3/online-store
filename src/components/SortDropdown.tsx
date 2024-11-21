@@ -6,7 +6,7 @@ import { sortOptions } from 'lib/constants'
 import Dropdown from 'components/Dropdown'
 
 const SortDropdown: React.FC = () => {
-  const { selectedValue, handleSortChange } = useSortParams()
+  const { memoizedSearchValue, handleSortChange } = useSortParams()
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const [sortBy, order] = event.target.value.split('|')
@@ -18,7 +18,7 @@ const SortDropdown: React.FC = () => {
       id="sort-by"
       label="Sort by:"
       sortOptions={sortOptions}
-      selectedValue={selectedValue}
+      selectedValue={memoizedSearchValue}
       handleChange={handleChange}
     />
   )

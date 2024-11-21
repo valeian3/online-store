@@ -1,17 +1,14 @@
 import { numberOfItemsPerPage } from 'lib/constants'
-import { FC, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-interface PaginationProps {
-  total: number
-  currentPage: number
-}
-const Pagination: FC<PaginationProps> = ({ total, currentPage }) => {
+const Pagination = ({ total }: { total: number }) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const totalPages = useMemo(
     () => Math.ceil(total / numberOfItemsPerPage),
     [total]
   )
+  const currentPage = parseInt(searchParams.get('page') || '1')
 
   const updatePageInUrl = (newPage: number) => {
     const newSearchParams = new URLSearchParams(searchParams)

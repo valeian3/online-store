@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
-// import { useProductsCategoryList } from 'lib/hooks'
 
 import Input from 'components/Input'
 import Sidebar from 'components/sidebar/Sidebar'
+import SidebarItemFilter from 'components/sidebar/SidebarItemFilter'
 
-// import SidebarItem from 'components/sidebar/SidebarItem'
+import type { IProductsCategoryList } from 'lib/types'
 
-function SidebarFilters() {
-  //   const { data, isLoading, isError } = useProductsCategoryList({})
-
-  //   if (isLoading) return <>fetching categories data...</>
-  //   if (isError) return <>error fetching categories data</>
-
+function SidebarFilters({
+  categories,
+}: {
+  categories?: IProductsCategoryList
+}) {
   const [priceFrom, setPriceFrom] = useState<string>('')
   const [priceTo, setPriceTo] = useState<string>('')
 
@@ -41,7 +40,7 @@ function SidebarFilters() {
         </svg>
         Filters
       </h4>
-      <div className="px-4 pt-2">
+      <div className="px-4 py-4">
         <h4 className="font-semibold">Price</h4>
         <div className="flex gap-4 mt-2">
           <Input
@@ -60,6 +59,28 @@ function SidebarFilters() {
           />
         </div>
       </div>
+      {categories && (
+        <>
+          <h4 className="py-3 px-4 text-lg font-semibold text-primary-600 uppercase bg-gray-200 flex items-center justify-start">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 mr-2"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" />
+            </svg>
+            Categories
+          </h4>
+          {categories.map((item, index) => (
+            <SidebarItemFilter key={index} text={item} />
+          ))}
+        </>
+      )}
     </Sidebar>
   )
 }

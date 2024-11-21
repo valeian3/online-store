@@ -2,7 +2,6 @@ import axios from 'axios'
 
 // import { urlParam } from './constants'
 
-import { excludeKeys } from 'lib/utils'
 import { numberOfItemsPerPage } from 'lib/constants'
 
 import type { ILoginUser, IRegisterUser } from 'lib/types'
@@ -116,10 +115,9 @@ const categories = {
     page: number
   }) {
     const skip = page === 1 ? 0 : (page - 1) * limit
-    const filteredParams = excludeKeys(params, ['page'])
 
     const res = await apiInstance.get(`/products/category/${category}`, {
-      params: { limit, skip, ...filteredParams },
+      params: { limit, skip, ...params },
     })
     return res.data
   },
@@ -136,10 +134,20 @@ const search = {
     page: number
   }) {
     const skip = page === 1 ? 0 : (page - 1) * limit
-    const filteredParams = excludeKeys(params, ['page'])
 
     const res = await apiInstance.get('/products/search', {
-      params: { limit, skip, ...filteredParams },
+      params: { limit, skip, ...params },
+    })
+    return res.data
+  },
+  async getSearchProductWithoutFilters({
+    params,
+  }: {
+    params: Record<string, string>
+  }) {
+    const { q: searchValue } = params
+    const res = await apiInstance.get('/products/search', {
+      params: { q: searchValue },
     })
     return res.data
   },
