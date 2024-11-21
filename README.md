@@ -1,6 +1,6 @@
 # React online store
 
-Here is a live [demo](https://online-store.netlify.app/).
+Here is a live [demo](https://online-store-demo-v1.netlify.app).
 
 ### About The Project
 
