@@ -28,7 +28,7 @@ function Register() {
   }
 
   return (
-    <div className="h-full flex flex-col justify-center sm:px-6 lg:px-8">
+    <div className="flex flex-col grow justify-center sm:px-6 lg:px-8">
       <div className="flex flex-col items-center justify-center">
         <div className="w-full bg-white rounded-lg tablet:shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

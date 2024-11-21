@@ -9,7 +9,7 @@ type SidebarLayoutProps = {
 
 const SidebarLayout: FC<SidebarLayoutProps> = ({ sidebar, children }) => {
   return (
-    <div className="h-full flex flex-row">
+    <div className="flex flex-row grow">
       {sidebar}
       <section className="grow tablet:px-8 tablet:py-4 overflow-y-auto max-h-[calc(100vh-96px)]">
         <Breadcrumbs />
