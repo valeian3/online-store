@@ -28,7 +28,7 @@ function Header() {
         <div className="h-full flex justify-between items-center">
           <a href="/" className="flex items-center">
             <p className="text-3xl font-semibold dark:text-white">
-              King Online Shop
+              Online Shop
             </p>
           </a>
 

@@ -1,6 +1,6 @@
-# React online store 
+# React online store
 
-Here is a live [demo](https://king-online-store.netlify.app/).
+Here is a live [demo](https://online-store.netlify.app/).
 
 ### About The Project
 
@@ -31,7 +31,7 @@ git clone url
 Navigate to the project directory:
 
 ```sh
-cd king-online-store
+cd online-store
 ```
 
 Install project dependencies:

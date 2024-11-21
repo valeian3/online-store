@@ -54,7 +54,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
 export const usePageTitle = (title?: string) => {
   useEffect(() => {
     if (!title) {
-      window.document.title = 'King Online Store'
+      window.document.title = 'Online Store'
     } else {
       window.document.title = title
     }
