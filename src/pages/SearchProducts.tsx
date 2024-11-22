@@ -2,10 +2,9 @@ import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import {
-  useCategoryList,
   usePageTitle,
-  useParsedSearchParams,
-  useSearchProducts,
+  useApiSearchParams,
+  useCategoryListFilter,
   useSearchProductsWithFilters,
 } from 'lib/hooks'
 
@@ -19,12 +18,11 @@ import SidebarFilters from 'components/SidebarFilters'
 function SearchProducts() {
   const navigate = useNavigate()
 
-  const productList = useSearchProducts()
-  const categories = useCategoryList(productList)
-  const { data, isLoading, isError } = useSearchProductsWithFilters({})
+  const categories = useCategoryListFilter()
+  const { data, isLoading, isError } = useSearchProductsWithFilters()
 
   // TODO: improve setting title
-  const parsedParams = useParsedSearchParams()
+  const parsedParams = useApiSearchParams()
   const memoizedSearchValue = useMemo(() => parsedParams.q, [parsedParams.q])
   usePageTitle(`Search result for: '${memoizedSearchValue}'`)
 
@@ -44,10 +42,10 @@ function SearchProducts() {
           Search product: {memoizedSearchValue}
         </h1>
         <SortDropdown />
-        <ProductList products={data.products} />
+        <ProductList list={data?.products} />
       </div>
 
-      <Pagination total={data.total} />
+      <Pagination totalPages={data?.total} />
     </SidebarLayout>
   )
 }

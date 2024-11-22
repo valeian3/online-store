@@ -1,10 +1,10 @@
-import { useProductsCategoryList } from 'lib/hooks'
+import { useCategoryList } from 'lib/hooks'
 
 import Sidebar from 'components/sidebar/Sidebar'
 import SidebarItem from 'components/sidebar/SidebarItem'
 
 function SidebarCategories() {
-  const { data, isLoading, isError } = useProductsCategoryList({})
+  const { data, isLoading, isError } = useCategoryList()
 
   if (isLoading) return <>fetching categories data...</>
   if (isError) return <>error fetching categories data</>
@@ -26,9 +26,9 @@ function SidebarCategories() {
         </svg>
         Categories
       </h4>
-      {data.map((item, index) => (
-        <SidebarItem key={index} label={item} />
-      ))}
+      {data?.map((item, index) => <SidebarItem key={index} label={item} />) || (
+        <>No available categories</>
+      )}
     </Sidebar>
   )
 }

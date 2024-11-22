@@ -1,14 +1,17 @@
-import { numberOfItemsPerPage } from 'lib/constants'
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-const Pagination = ({ total }: { total: number }) => {
+import { numberOfItemsPerPage } from 'lib/constants'
+
+const Pagination = ({ totalPages }: { totalPages?: number }) => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const totalPages = useMemo(
-    () => Math.ceil(total / numberOfItemsPerPage),
-    [total]
-  )
+
   const currentPage = parseInt(searchParams.get('page') || '1')
+
+  const memoizedTotalPages = useMemo(() => {
+    if (totalPages) return Math.ceil(totalPages / numberOfItemsPerPage)
+    else return 0
+  }, [totalPages])
 
   const updatePageInUrl = (newPage: number) => {
     const newSearchParams = new URLSearchParams(searchParams)
@@ -17,7 +20,7 @@ const Pagination = ({ total }: { total: number }) => {
   }
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
+    if (currentPage < memoizedTotalPages) {
       updatePageInUrl(currentPage + 1)
     }
   }
@@ -33,7 +36,7 @@ const Pagination = ({ total }: { total: number }) => {
   }
 
   const handleLastPage = () => {
-    updatePageInUrl(totalPages)
+    updatePageInUrl(memoizedTotalPages)
   }
 
   return (
@@ -89,10 +92,10 @@ const Pagination = ({ total }: { total: number }) => {
         )}
 
         <span className="flex items-center justify-center px-4 h-10 text-base font-medium text-gray-700">
-          Page {currentPage} of {totalPages}
+          Page {currentPage} of {memoizedTotalPages}
         </span>
 
-        {currentPage !== totalPages && (
+        {currentPage !== memoizedTotalPages && (
           <>
             <button
               className={`flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-primary-700 rounded-md hover:bg-primary-800 disabled:bg-gray-400`}

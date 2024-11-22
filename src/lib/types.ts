@@ -48,3 +48,8 @@ export interface IProductsByCategory {
   skip: number
   total: number
 }
+
+export interface ICategoryListFilter {
+  categoryName: string
+  numOfProductsInCategory: number
+}

@@ -1,16 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
-import { urlParam } from 'lib/constants'
 import { AuthContext } from 'contexts/AuthProvider'
+
+import { urlParam } from 'lib/constants'
 import { categories, products, search } from 'lib/api'
 import { excludeKeys, filterProducts } from 'lib/utils'
 import { categoryKeys, productKeys, searchKeys } from 'lib/query-key-factory'
 
 import type {
   IProduct,
+  ICategoryListFilter,
   IProductsByCategory,
   IProductsCategoryList,
 } from 'lib/types'
@@ -61,85 +62,68 @@ export const usePageTitle = (title?: string) => {
   }, [title])
 }
 
-// TODO: define type for query options
-export const useProductsCategoryList = (options: any) => {
-  return useQuery<IProductsCategoryList>({
-    queryKey: categoryKeys.all,
-    queryFn: () => categories.getProductsCategoryList(),
-    ...options,
-  })
-}
+/** Query hooks */
 
-// TODO: define type for response result
-export const useProductsByCategory = (category: string, options: any) => {
-  const [searchParams] = useSearchParams()
-  const parsedParams = useParsedSearchParams()
-
-  const currentPage = searchParams.get('page') || '1'
-  const priceFrom = searchParams.get('priceFrom') || undefined
-  const priceTo = searchParams.get('priceTo') || undefined
-
-  return useQuery<IProductsByCategory>({
-    queryKey: categoryKeys.productsList(category, parsedParams, currentPage),
-    queryFn: async () => {
-      const res = await categories.getProductsByCategory({
-        category,
-        params: parsedParams,
-        page: currentPage,
-      })
-
-      return filterProducts(res, {
-        priceFrom,
-        priceTo,
-      })
-    },
-    ...options,
-  })
-}
-
-export const useProduct = (productId: number, options: any) => {
+// Fetch product info
+export const useProduct = (productId: number) => {
   return useQuery<IProduct>({
     queryKey: productKeys.detail(productId),
     queryFn: () => products.getProduct(productId),
-    ...options,
   })
 }
 
-export const useSearchProducts = (): IProduct[] => {
-  const parsedParams = useParsedSearchParams()
-
-  const { data } = useQuery<IProductsByCategory>({
-    queryKey: searchKeys.searchedList({ ...parsedParams }),
-    queryFn: () => search.getSearchProduct({ params: parsedParams }),
+// Fetch list of all available categories
+export const useCategoryList = () => {
+  return useQuery<IProductsCategoryList>({
+    queryKey: categoryKeys.all,
+    queryFn: () => categories.getCategoryList(),
   })
-
-  if (data?.products) return data?.products
-  else return []
 }
 
-export const useSearchProductsWithFilters = (options: any) => {
-  const [searchParams] = useSearchParams()
-  const parsedParams = useParsedSearchParams()
-
-  const currentPage = searchParams.get('page') || '1'
-  const category = searchParams.get('category') || undefined
-  const priceFrom = searchParams.get('priceFrom') || undefined
-  const priceTo = searchParams.get('priceTo') || undefined
+// Fetch list of products that are in selected category
+export const useProductsByCategory = (category: string) => {
+  const apiSearchParams = useApiSearchParams()
+  const { page = '1', priceFrom, priceTo } = useCustomSearchParams()
 
   return useQuery<IProductsByCategory>({
-    queryKey: searchKeys.searchedListWithFilters(
-      {
-        ...parsedParams,
+    queryKey: categoryKeys.productsList(category, {
+      ...apiSearchParams,
+      page,
+      priceFrom,
+      priceTo,
+    }),
+    queryFn: async () => {
+      const res = await categories.getProductsByCategory({
         category,
+        params: apiSearchParams,
+        page: page,
+      })
+
+      return filterProducts(res, {
         priceFrom,
         priceTo,
-      },
-      currentPage
-    ),
+      })
+    },
+  })
+}
+
+// Fetch list of products that match search value
+export const useSearchProductsWithFilters = () => {
+  const apiSearchParams = useApiSearchParams()
+  const { page = '1', category, priceFrom, priceTo } = useCustomSearchParams()
+
+  return useQuery<IProductsByCategory>({
+    queryKey: searchKeys.searchedListWithFilters({
+      ...apiSearchParams,
+      category,
+      priceFrom,
+      priceTo,
+      page,
+    }),
     queryFn: async () => {
       const res = await search.getSearchProductWithFilters({
-        params: parsedParams,
-        page: currentPage,
+        params: apiSearchParams,
+        page: page,
       })
 
       return filterProducts(res, {
@@ -148,15 +132,15 @@ export const useSearchProductsWithFilters = (options: any) => {
         priceTo,
       })
     },
-
-    ...options,
   })
 }
 
-// hook that separates params from api and util params used in application for filtering and etc.
-export const useParsedSearchParams = (): Record<string, string> => {
+/** Util hooks */
+
+// Filters url parameters that are used by API to filter data on server
+export const useApiSearchParams = (): Record<string, string> => {
   const [searchParams] = useSearchParams()
-  const { page, category, minPrice, maxPrice } = urlParam
+  const { category, priceFrom, priceTo } = urlParam
 
   const paramsObject: Record<string, string> = {}
 
@@ -164,7 +148,21 @@ export const useParsedSearchParams = (): Record<string, string> => {
     paramsObject[key] = value
   })
 
-  return excludeKeys(paramsObject, [page, category, minPrice, maxPrice])
+  return excludeKeys(paramsObject, [category, priceFrom, priceTo])
+}
+
+// Filters url parameters that are used as utility to filter data on client
+export const useCustomSearchParams = (): Record<string, string> => {
+  const [searchParams] = useSearchParams()
+  const { sortBy, order, searchProduct } = urlParam
+
+  const paramsObject: Record<string, string> = {}
+
+  searchParams.forEach((value, key) => {
+    paramsObject[key] = value
+  })
+
+  return excludeKeys(paramsObject, [searchProduct, sortBy, order])
 }
 
 // Custom hook to manage and update sorting parameters in the URL search parameters
@@ -196,22 +194,26 @@ export const useSortParams = () => {
   return { memoizedSearchValue, handleSortChange }
 }
 
-// Custom hook to manage category list in sidebar
-export const useCategoryList = (
-  productList: IProduct[]
-): {
-  categoryName: string
-  numOfProductsInCategory: number
-}[] => {
+// Returns category list with number of products in category
+export const useCategoryListFilter = (): ICategoryListFilter[] => {
+  const parsedParams = useApiSearchParams()
+
+  const { data, isLoading, isError } = useQuery<IProductsByCategory>({
+    queryKey: searchKeys.searchedList({ ...parsedParams }),
+    queryFn: () => search.getSearchProduct({ params: parsedParams }),
+  })
+
   const memoizedCategoryList = useMemo(() => {
-    if (!productList) return []
+    if (isLoading || isError || !data?.products) return []
 
-    const categoryMap: Map<string, number> = new Map()
-
-    productList.forEach((product) => {
-      const count = categoryMap.get(product.category) || 0
-      categoryMap.set(product.category, count + 1)
-    })
+    const categoryMap = data.products.reduce<Map<string, number>>(
+      (acc, product) => {
+        const count = acc.get(product.category) || 0
+        acc.set(product.category, count + 1)
+        return acc
+      },
+      new Map()
+    )
 
     return Array.from(
       categoryMap,
@@ -220,7 +222,7 @@ export const useCategoryList = (
         numOfProductsInCategory,
       })
     )
-  }, [productList])
+  }, [data?.products, isLoading, isError])
 
   return memoizedCategoryList
 }

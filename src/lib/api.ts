@@ -99,7 +99,7 @@ const categories = {
     const res = await apiInstance.get('/products/categories')
     return res.data
   },
-  async getProductsCategoryList(): Promise<string[]> {
+  async getCategoryList(): Promise<string[]> {
     const res = await apiInstance.get(`/products/category-list`)
     return res.data
   },
