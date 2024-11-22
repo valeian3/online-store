@@ -74,16 +74,25 @@ export const useProductsCategoryList = (options: any) => {
 export const useProductsByCategory = (category: string, options: any) => {
   const [searchParams] = useSearchParams()
   const parsedParams = useParsedSearchParams()
-  const currentPage = parseInt(searchParams.get('page') || '1')
+
+  const currentPage = searchParams.get('page') || '1'
+  const priceFrom = searchParams.get('priceFrom') || undefined
+  const priceTo = searchParams.get('priceTo') || undefined
 
   return useQuery<IProductsByCategory>({
     queryKey: categoryKeys.productsList(category, parsedParams, currentPage),
-    queryFn: () =>
-      categories.getProductsByCategory({
+    queryFn: async () => {
+      const res = await categories.getProductsByCategory({
         category,
         params: parsedParams,
         page: currentPage,
-      }),
+      })
+
+      return filterProducts(res, {
+        priceFrom,
+        priceTo,
+      })
+    },
     ...options,
   })
 }
@@ -111,12 +120,20 @@ export const useSearchProducts = (): IProduct[] => {
 export const useSearchProductsWithFilters = (options: any) => {
   const [searchParams] = useSearchParams()
   const parsedParams = useParsedSearchParams()
-  const currentPage = parseInt(searchParams.get('page') || '1')
-  const category = searchParams.get('category')
+
+  const currentPage = searchParams.get('page') || '1'
+  const category = searchParams.get('category') || undefined
+  const priceFrom = searchParams.get('priceFrom') || undefined
+  const priceTo = searchParams.get('priceTo') || undefined
 
   return useQuery<IProductsByCategory>({
     queryKey: searchKeys.searchedListWithFilters(
-      { ...parsedParams, ...(category ? { category } : {}) },
+      {
+        ...parsedParams,
+        category,
+        priceFrom,
+        priceTo,
+      },
       currentPage
     ),
     queryFn: async () => {
@@ -126,7 +143,9 @@ export const useSearchProductsWithFilters = (options: any) => {
       })
 
       return filterProducts(res, {
-        ...(category ? { category } : {}),
+        category,
+        priceFrom,
+        priceTo,
       })
     },
 

@@ -107,14 +107,15 @@ const categories = {
     category,
     params,
     limit = numberOfItemsPerPage,
-    page = 1,
+    page,
   }: {
     category: string
     params: Record<string, string>
     limit?: number
-    page: number
+    page: string | undefined
   }) {
-    const skip = page === 1 ? 0 : (page - 1) * limit
+    const parsedPage = Number(page || '1')
+    const skip = parsedPage === 1 ? 0 : (parsedPage - 1) * limit
 
     const res = await apiInstance.get(`/products/category/${category}`, {
       params: { limit, skip, ...params },
@@ -134,13 +135,14 @@ const search = {
   async getSearchProductWithFilters({
     params,
     limit = numberOfItemsPerPage,
-    page = 1,
+    page,
   }: {
     params: Record<string, string>
     limit?: number
-    page: number
+    page: string | undefined
   }) {
-    const skip = page === 1 ? 0 : (page - 1) * limit
+    const parsedPage = Number(page || '1')
+    const skip = parsedPage === 1 ? 0 : (parsedPage - 1) * limit
 
     const res = await apiInstance.get('/products/search', {
       params: { limit, skip, ...params },

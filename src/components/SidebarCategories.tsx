@@ -27,7 +27,7 @@ function SidebarCategories() {
         Categories
       </h4>
       {data.map((item, index) => (
-        <SidebarItem key={index} text={item} />
+        <SidebarItem key={index} label={item} />
       ))}
     </Sidebar>
   )

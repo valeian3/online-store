@@ -8,10 +8,16 @@ const categoryKeys = {
   productsList: (
     categoryName: string,
     params: Record<string, string>,
-    page: number
+    page: string
   ) => {
-    const { order, sortBy } = params
-    const filters = { sortBy: sortBy, order: order }
+    const { order, sortBy, priceFrom, priceTo } = params
+    const filters = {
+      sortBy: sortBy,
+      order: order,
+      priceFrom: priceFrom,
+      priceTo: priceTo,
+    }
+
     return [
       ...categoryKeys.products(),
       categoryName,
@@ -34,9 +40,26 @@ const searchKeys = {
     const { q: searchValue } = params
     return [...searchKeys.searched(), searchValue] as const
   },
-  searchedListWithFilters: (params: Record<string, string>, page: number) => {
-    const { q: searchValue, order, sortBy, category } = params
-    const filters = { sortBy: sortBy, order: order, category: category }
+  searchedListWithFilters: (
+    params: Record<string, string | undefined>,
+    page: string
+  ) => {
+    const {
+      q: searchValue,
+      order,
+      sortBy,
+      category,
+      priceFrom,
+      priceTo,
+    } = params
+    const filters = {
+      sortBy: sortBy,
+      order: order,
+      category: category,
+      priceFrom: priceFrom,
+      priceTo: priceTo,
+    }
+
     return [
       ...searchKeys.searched(),
       searchValue,

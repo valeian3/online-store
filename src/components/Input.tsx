@@ -8,6 +8,7 @@ interface InputProps {
   placeholder?: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
+  required?: boolean
 }
 
 const Input: React.FC<InputProps> = ({
@@ -18,7 +19,16 @@ const Input: React.FC<InputProps> = ({
   value,
   onChange,
   className,
+  required,
 }) => {
+  const inputStyles =
+    type === 'number'
+      ? {
+          WebkitAppearance: 'none' as const,
+          MozAppearance: 'textfield' as const,
+        }
+      : {}
+
   return (
     <input
       type={type}
@@ -27,7 +37,9 @@ const Input: React.FC<InputProps> = ({
       value={value}
       placeholder={placeholder}
       onChange={onChange}
-      className={`block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${className}`}
+      required={required}
+      className={`block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary-600 ${className}`}
+      style={inputStyles}
     />
   )
 }

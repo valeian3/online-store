@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 import Input from 'components/Input'
 import Sidebar from 'components/sidebar/Sidebar'
-import SidebarItemFilter from 'components/sidebar/SidebarItemFilter'
+import SidebarItem from 'components/sidebar/SidebarItem'
 
 function SidebarFilters({
   categories,
@@ -12,8 +13,21 @@ function SidebarFilters({
     numOfProductsInCategory: number
   }[]
 }) {
-  const [priceFrom, setPriceFrom] = useState<string>('')
-  const [priceTo, setPriceTo] = useState<string>('')
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const [priceFrom, setPriceFrom] = useState<string>(
+    searchParams.get('priceFrom') || ''
+  )
+  const [priceTo, setPriceTo] = useState<string>(
+    searchParams.get('priceTo') || ''
+  )
+
+  const handleSetUrlParam = (categoryName: string) => {
+    const newSearchParams = new URLSearchParams(searchParams)
+    newSearchParams.set('category', categoryName)
+
+    setSearchParams(newSearchParams)
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -24,42 +38,107 @@ function SidebarFilters({
     }
   }
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const newSearchParams = new URLSearchParams(searchParams)
+
+    newSearchParams.set('priceFrom', priceFrom)
+    newSearchParams.set('priceTo', priceTo)
+
+    setSearchParams(newSearchParams)
+  }
+
+  const handleClearFilters = () => {
+    const newSearchParams = new URLSearchParams()
+
+    if (searchParams.has('q')) {
+      newSearchParams.set('q', searchParams.get('q') as string)
+    }
+
+    setPriceFrom('')
+    setPriceTo('')
+    setSearchParams(newSearchParams)
+  }
+
+  const hasFilters =
+    searchParams.has('priceFrom') ||
+    searchParams.has('priceTo') ||
+    searchParams.has('category')
+
   return (
     <Sidebar>
-      <h4 className="py-3 px-4 text-lg font-semibold text-primary-600 uppercase bg-gray-200 flex items-center justify-start">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 mr-2"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M3 4h18M8 10h8M9 14h6L12 20l-3-6H9z" />
-        </svg>
-        Filters
-      </h4>
-      <div className="px-4 py-4">
-        <h4 className="font-semibold">Price</h4>
-        <div className="flex gap-4 mt-2">
-          <Input
-            id="price-from"
-            name="priceFrom"
-            placeholder="min"
-            value={priceFrom}
-            onChange={handleChange}
-          />
-          <Input
-            id="price-to"
-            name="priceTo"
-            placeholder="max"
-            value={priceTo}
-            onChange={handleChange}
-          />
-        </div>
+      <div className="py-3 px-4 bg-gray-200 flex items-center justify-between">
+        <h4 className="text-lg font-semibold text-primary-600 flex items-center justify-start">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 mr-2"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M3 4h18M8 10h8M9 14h6L12 20l-3-6H9z" />
+          </svg>
+          FILTERS
+        </h4>
+
+        {hasFilters && (
+          <button
+            onClick={handleClearFilters}
+            className="flex items-center bg-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full hover:bg-gray-400"
+          >
+            Clear Filters
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-3 h-3 ml-1"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        )}
       </div>
+
+      <h4 className="font-semibold mx-4 my-2">Price</h4>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 px-4 mt-2 mb-4"
+      >
+        <Input
+          id="price-from"
+          name="priceFrom"
+          placeholder="min"
+          type="number"
+          required
+          value={priceFrom}
+          onChange={handleChange}
+        />
+        <Input
+          id="price-to"
+          name="priceTo"
+          placeholder="max"
+          type="number"
+          required
+          value={priceTo}
+          onChange={handleChange}
+        />
+        <button
+          type="submit"
+          className="py-2 px-4 bg-primary-600 text-white rounded hover:bg-primary-400"
+        >
+          Apply
+        </button>
+      </form>
+
       {categories && (
         <>
           <h4 className="py-3 px-4 text-lg font-semibold text-primary-600 uppercase bg-gray-200 flex items-center justify-start">
@@ -78,10 +157,11 @@ function SidebarFilters({
             Categories
           </h4>
           {categories.map((item, index) => (
-            <SidebarItemFilter
+            <SidebarItem
               key={index}
-              text={item.categoryName}
-              numOfProducts={item.numOfProductsInCategory}
+              label={item.categoryName}
+              numOfItems={item.numOfProductsInCategory}
+              handleClick={handleSetUrlParam}
             />
           ))}
         </>
