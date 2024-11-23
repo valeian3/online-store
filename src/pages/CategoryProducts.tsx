@@ -15,16 +15,16 @@ export default function CategoryProducts() {
   const { data, isLoading, isError } = useProductsByCategory(categoryName)
 
   if (isLoading) return <>fetching category products data...</>
-  if (isError) return <>error fetching category products data</>
+  if (isError || !data) return <>error fetching category products data</>
 
   return (
     <SidebarLayout sidebar={<SidebarFilters />}>
       <div className="grow">
         <h1 className="text-2xl font-bold mb-6">Category: {categoryName}</h1>
         <SortDropdown />
-        <ProductList list={data?.products} />
+        <ProductList list={data.products} />
       </div>
-      <Pagination totalPages={data?.total} />
+      <Pagination totalPages={data.total} />
     </SidebarLayout>
   )
 }

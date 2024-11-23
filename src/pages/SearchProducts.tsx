@@ -33,7 +33,7 @@ function SearchProducts() {
   }, [memoizedSearchValue])
 
   if (isLoading) return <>fetching category products data...</>
-  if (isError) return <>error fetching category products data</>
+  if (isError || !data) return <>error fetching category products data</>
 
   return (
     <SidebarLayout sidebar={<SidebarFilters categories={categories} />}>
@@ -42,10 +42,10 @@ function SearchProducts() {
           Search product: {memoizedSearchValue}
         </h1>
         <SortDropdown />
-        <ProductList list={data?.products} />
+        <ProductList list={data.products} />
       </div>
 
-      <Pagination totalPages={data?.total} />
+      <Pagination totalPages={data.total} />
     </SidebarLayout>
   )
 }

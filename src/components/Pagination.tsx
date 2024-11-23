@@ -3,15 +3,16 @@ import { useSearchParams } from 'react-router-dom'
 
 import { numberOfItemsPerPage } from 'lib/constants'
 
-const Pagination = ({ totalPages }: { totalPages?: number }) => {
+const Pagination = ({ totalPages }: { totalPages: number }) => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const currentPage = parseInt(searchParams.get('page') || '1')
 
-  const memoizedTotalPages = useMemo(() => {
-    if (totalPages) return Math.ceil(totalPages / numberOfItemsPerPage)
-    else return 0
-  }, [totalPages])
+  const memoizedTotalPages = useMemo(
+    () => Math.ceil(totalPages / numberOfItemsPerPage),
+
+    [totalPages]
+  )
 
   const updatePageInUrl = (newPage: number) => {
     const newSearchParams = new URLSearchParams(searchParams)
