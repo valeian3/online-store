@@ -5,7 +5,7 @@ import {
   usePageTitle,
   useApiSearchParams,
   useCategoryListFilter,
-  useSearchProductsWithFilters,
+  useProductListSearchWithFilters,
 } from 'lib/hooks'
 
 import SidebarLayout from 'layout/SidebarLayout'
@@ -19,7 +19,7 @@ function SearchProducts() {
   const navigate = useNavigate()
 
   const categories = useCategoryListFilter()
-  const { data, isLoading, isError } = useSearchProductsWithFilters()
+  const { data, isLoading, isError } = useProductListSearchWithFilters()
 
   // TODO: improve setting title
   const parsedParams = useApiSearchParams()

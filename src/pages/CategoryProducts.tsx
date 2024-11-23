@@ -7,12 +7,12 @@ import SidebarFilters from 'components/SidebarFilters'
 
 import SidebarLayout from 'layout/SidebarLayout'
 
-import { usePageTitle, useProductsByCategory } from 'lib/hooks'
+import { usePageTitle, useProductListByCategory } from 'lib/hooks'
 
 export default function CategoryProducts() {
   const { categoryName = '' } = useParams<{ categoryName: string }>()
   usePageTitle(categoryName)
-  const { data, isLoading, isError } = useProductsByCategory(categoryName)
+  const { data, isLoading, isError } = useProductListByCategory(categoryName)
 
   if (isLoading) return <>fetching category products data...</>
   if (isError || !data) return <>error fetching category products data</>

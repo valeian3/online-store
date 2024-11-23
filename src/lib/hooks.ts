@@ -91,7 +91,7 @@ export const useCategoryList = () => {
 }
 
 // Fetch list of products that are in selected category
-export const useProductsByCategory = (category: string) => {
+export const useProductListByCategory = (category: string) => {
   const apiSearchParams = useApiSearchParams()
   const { page = '1', priceFrom, priceTo } = useCustomSearchParams()
 
@@ -118,7 +118,7 @@ export const useProductsByCategory = (category: string) => {
 }
 
 // Fetch list of products that match search value
-export const useSearchProductsWithFilters = () => {
+export const useProductListSearchWithFilters = () => {
   const apiSearchParams = useApiSearchParams()
   const { page = '1', category, priceFrom, priceTo } = useCustomSearchParams()
 
