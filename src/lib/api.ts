@@ -1,10 +1,16 @@
 import axios from 'axios'
 
-// import { urlParam } from './constants'
-
 import { numberOfItemsPerPage } from 'lib/constants'
 
-import type { ILoginUser, IRegisterUser } from 'lib/types'
+import type {
+  ILoginUser,
+  IRegisterUser,
+  IProduct,
+  ICategoryList,
+  IProductListByCategory,
+  IProductListSearch,
+  IProductListSearchWithFilters,
+} from 'lib/types'
 
 const BASE_URL = import.meta.env.VITE_API_URL_DUMMY_JSON
 
@@ -84,22 +90,14 @@ const userAuthProvider = {
 }
 
 const products = {
-  async getProducts() {
-    const res = await apiInstance.get('/products')
-    return res.data
-  },
-  async getProduct(id: number) {
+  async getProduct(id: number): Promise<IProduct> {
     const res = await apiInstance.get(`products/${id}`)
     return res.data
   },
 }
 
 const categories = {
-  async getProductsCategories() {
-    const res = await apiInstance.get('/products/categories')
-    return res.data
-  },
-  async getCategoryList(): Promise<string[]> {
+  async getCategoryList(): Promise<ICategoryList> {
     const res = await apiInstance.get(`/products/category-list`)
     return res.data
   },
@@ -113,7 +111,7 @@ const categories = {
     params: Record<string, string>
     limit?: number
     page: string | undefined
-  }) {
+  }): Promise<IProductListByCategory> {
     const parsedPage = Number(page || '1')
     const skip = parsedPage === 1 ? 0 : (parsedPage - 1) * limit
 
@@ -125,7 +123,11 @@ const categories = {
 }
 
 const search = {
-  async getSearchProduct({ params }: { params: Record<string, string> }) {
+  async getSearchProduct({
+    params,
+  }: {
+    params: Record<string, string>
+  }): Promise<IProductListSearch> {
     const { q: searchValue } = params
     const res = await apiInstance.get('/products/search', {
       params: { q: searchValue },
@@ -140,7 +142,7 @@ const search = {
     params: Record<string, string>
     limit?: number
     page: string | undefined
-  }) {
+  }): Promise<IProductListSearchWithFilters> {
     const parsedPage = Number(page || '1')
     const skip = parsedPage === 1 ? 0 : (parsedPage - 1) * limit
 

@@ -28,9 +28,7 @@ export interface IGetInventoryItems {
   response_type: string
 }
 
-// Types for an online store app
-
-// product
+/** Online store types */
 export interface IProduct {
   id: number
   title: string
@@ -40,11 +38,9 @@ export interface IProduct {
   thumbnail: string
 }
 
-// categories
-export type IProductsCategoryList = string[]
-export interface IProductsByCategory {
-  limit: number
+export interface IProductList {
   products: IProduct[]
+  limit: number
   skip: number
   total: number
 }
@@ -53,3 +49,8 @@ export interface ICategoryListFilter {
   categoryName: string
   numOfProductsInCategory: number
 }
+
+export type ICategoryList = string[]
+export type IProductListByCategory = IProductList
+export type IProductListSearch = IProductList
+export type IProductListSearchWithFilters = IProductList

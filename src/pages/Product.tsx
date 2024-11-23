@@ -7,11 +7,11 @@ import Breadcrumbs from 'components/Breadcrumbs'
 function Product() {
   const { productName = '' } = useParams<{ productName: string }>()
   const productId = extractProductId(productName)
-  const { data, isLoading, isError } = useProduct(productId, {})
+  const { data, isLoading, isError } = useProduct(productId)
   usePageTitle(data?.title)
 
   if (isLoading) return <>fetching product data...</>
-  if (isError) return <>error fetching product data</>
+  if (isError || !data) return <>error fetching product data</>
 
   const { title, description, price, thumbnail } = data
 

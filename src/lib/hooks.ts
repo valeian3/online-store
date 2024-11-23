@@ -1,6 +1,10 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import {
+  useQuery,
+  UseQueryOptions,
+  UseQueryResult,
+} from '@tanstack/react-query'
 
 import { AuthContext } from 'contexts/AuthProvider'
 
@@ -11,9 +15,11 @@ import { categoryKeys, productKeys, searchKeys } from 'lib/query-key-factory'
 
 import type {
   IProduct,
+  ICategoryList,
   ICategoryListFilter,
-  IProductsByCategory,
-  IProductsCategoryList,
+  IProductListByCategory,
+  IProductListSearch,
+  IProductListSearchWithFilters,
 } from 'lib/types'
 
 export const useAuth = () => {
@@ -65,16 +71,20 @@ export const usePageTitle = (title?: string) => {
 /** Query hooks */
 
 // Fetch product info
-export const useProduct = (productId: number) => {
+export const useProduct = (
+  productId: number,
+  options?: Omit<UseQueryOptions<IProduct, Error>, 'queryKey' | 'queryFn'>
+): UseQueryResult<IProduct> => {
   return useQuery<IProduct>({
     queryKey: productKeys.detail(productId),
     queryFn: () => products.getProduct(productId),
+    ...options,
   })
 }
 
 // Fetch list of all available categories
 export const useCategoryList = () => {
-  return useQuery<IProductsCategoryList>({
+  return useQuery<ICategoryList>({
     queryKey: categoryKeys.all,
     queryFn: () => categories.getCategoryList(),
   })
@@ -85,7 +95,7 @@ export const useProductsByCategory = (category: string) => {
   const apiSearchParams = useApiSearchParams()
   const { page = '1', priceFrom, priceTo } = useCustomSearchParams()
 
-  return useQuery<IProductsByCategory>({
+  return useQuery<IProductListByCategory>({
     queryKey: categoryKeys.productsList(category, {
       ...apiSearchParams,
       page,
@@ -112,7 +122,7 @@ export const useSearchProductsWithFilters = () => {
   const apiSearchParams = useApiSearchParams()
   const { page = '1', category, priceFrom, priceTo } = useCustomSearchParams()
 
-  return useQuery<IProductsByCategory>({
+  return useQuery<IProductListSearchWithFilters>({
     queryKey: searchKeys.searchedListWithFilters({
       ...apiSearchParams,
       category,
@@ -198,7 +208,7 @@ export const useSortParams = () => {
 export const useCategoryListFilter = (): ICategoryListFilter[] => {
   const parsedParams = useApiSearchParams()
 
-  const { data, isLoading, isError } = useQuery<IProductsByCategory>({
+  const { data, isLoading, isError } = useQuery<IProductListSearch>({
     queryKey: searchKeys.searchedList({ ...parsedParams }),
     queryFn: () => search.getSearchProduct({ params: parsedParams }),
   })
