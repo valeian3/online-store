@@ -101,7 +101,7 @@ const categories = {
     const res = await apiInstance.get(`/products/category-list`)
     return res.data
   },
-  async getProductsByCategory({
+  async getProductListByCategory({
     category,
     params,
     limit = numberOfItemsPerPage,
@@ -123,7 +123,7 @@ const categories = {
 }
 
 const search = {
-  async getSearchProduct({
+  async getProductListSearch({
     params,
   }: {
     params: Record<string, string>
@@ -134,7 +134,7 @@ const search = {
     })
     return res.data
   },
-  async getSearchProductWithFilters({
+  async getProductListSearchWithFilters({
     params,
     limit = numberOfItemsPerPage,
     page,

@@ -103,7 +103,7 @@ export const useProductsByCategory = (category: string) => {
       priceTo,
     }),
     queryFn: async () => {
-      const res = await categories.getProductsByCategory({
+      const res = await categories.getProductListByCategory({
         category,
         params: apiSearchParams,
         page: page,
@@ -131,7 +131,7 @@ export const useSearchProductsWithFilters = () => {
       page,
     }),
     queryFn: async () => {
-      const res = await search.getSearchProductWithFilters({
+      const res = await search.getProductListSearchWithFilters({
         params: apiSearchParams,
         page: page,
       })
@@ -210,7 +210,7 @@ export const useCategoryListFilter = (): ICategoryListFilter[] => {
 
   const { data, isLoading, isError } = useQuery<IProductListSearch>({
     queryKey: searchKeys.searchedList({ ...parsedParams }),
-    queryFn: () => search.getSearchProduct({ params: parsedParams }),
+    queryFn: () => search.getProductListSearch({ params: parsedParams }),
   })
 
   const memoizedCategoryList = useMemo(() => {
