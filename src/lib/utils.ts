@@ -1,4 +1,4 @@
-import type { IProductsByCategory } from 'lib/types'
+import type { IProductListByCategory } from 'lib/types'
 
 // TODO: instead of 0 return null, test out query with null
 // Function to extract product ID from formatted name
@@ -33,18 +33,18 @@ export function excludeKeys(
  * If no filter is provided for a particular attribute (category, priceFrom, priceTo),
  * that filter is ignored. It returns a new object with the filtered products.
  *
- * @param {IProductsByCategory} searchedProductsData - The initial list of products to be filtered.
+ * @param {IProductListByCategory} searchedProductsData - The initial list of products to be filtered.
  * @param {Object} filters - The filters to apply.
  * @param {string} [filters.category] - The category to filter the products by (optional).
  * @param {string} [filters.priceFrom] - The minimum price to filter the products by (optional).
  * @param {string} [filters.priceTo] - The maximum price to filter the products by (optional).
  *
- * @returns {IProductsByCategory} The filtered products data.
+ * @returns {IProductListByCategory} The filtered products data.
  */
 export function filterProducts(
-  searchedProductsData: IProductsByCategory,
+  searchedProductsData: IProductListByCategory,
   filters: { category?: string; priceFrom?: string; priceTo?: string }
-): IProductsByCategory {
+): IProductListByCategory {
   const { category, priceFrom, priceTo } = filters
 
   const filteredProducts = searchedProductsData.products.filter((product) => {
