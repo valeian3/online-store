@@ -1,5 +1,6 @@
 import { useCategoryList } from 'lib/hooks'
 
+import Search from 'components/Search'
 import Sidebar from 'components/sidebar/Sidebar'
 import SidebarItem from 'components/sidebar/SidebarItem'
 
@@ -7,10 +8,11 @@ function SidebarCategories() {
   const { data, isLoading, isError } = useCategoryList()
 
   if (isLoading) return <>fetching categories data...</>
-  if (isError) return <>error fetching categories data</>
+  if (isError || !data) return <>error fetching categories data</>
 
   return (
     <Sidebar>
+      <Search className="m-4 grow tablet:hidden" />
       <h4 className="py-3 px-4 text-lg font-semibold text-primary-600 uppercase bg-gray-200 flex items-center justify-start">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -26,9 +28,11 @@ function SidebarCategories() {
         </svg>
         Categories
       </h4>
-      {data?.map((item, index) => <SidebarItem key={index} label={item} />) || (
-        <>No available categories</>
-      )}
+      <ul>
+        {data.map((item, index) => (
+          <SidebarItem key={index} label={item} />
+        ))}
+      </ul>
     </Sidebar>
   )
 }

@@ -19,12 +19,14 @@ export default function CategoryProducts() {
 
   return (
     <SidebarLayout sidebar={<SidebarFilters />}>
-      <div className="grow">
-        <h1 className="text-2xl font-bold mb-6">Category: {categoryName}</h1>
-        <SortDropdown />
-        <ProductList list={data.products} />
+      <div>
+        <div className="grow">
+          <h1 className="text-2xl font-bold mb-6">Category: {categoryName}</h1>
+          <SortDropdown />
+          <ProductList list={data.products} />
+        </div>
+        <Pagination totalPages={data.total} />
       </div>
-      <Pagination totalPages={data.total} />
     </SidebarLayout>
   )
 }

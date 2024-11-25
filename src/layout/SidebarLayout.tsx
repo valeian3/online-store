@@ -1,5 +1,7 @@
 import { ReactNode, FC } from 'react'
 
+import { useSidebar } from 'lib/hooks'
+
 import Breadcrumbs from 'components/Breadcrumbs'
 
 type SidebarLayoutProps = {
@@ -8,14 +10,19 @@ type SidebarLayoutProps = {
 }
 
 const SidebarLayout: FC<SidebarLayoutProps> = ({ sidebar, children }) => {
+  const { isSidebarOpen } = useSidebar()
   return (
-    <div className="flex flex-row grow">
+    <main className="flex flex-row grow">
       {sidebar}
-      <section className="flex grow flex-col tablet:px-8 tablet:py-4 overflow-y-auto max-h-[calc(100vh-96px)]">
+      <section
+        className={`max-h-[calc(100vh-96px)] w-full flex flex-col overflow-y-auto transition-all duration-300 ${
+          isSidebarOpen ? 'hidden' : 'block'
+        } p-8  tablet:px-8 tablet:py-4 tablet:block tablet:w-full`}
+      >
         <Breadcrumbs />
         {children}
       </section>
-    </div>
+    </main>
   )
 }
 

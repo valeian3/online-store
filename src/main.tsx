@@ -8,6 +8,7 @@ import AppRoutes from 'routes/AppRoutes'
 // contexts
 import { AuthProvider } from 'contexts/AuthProvider'
 import QueryProvider from 'contexts/QueryProvider'
+import { SidebarProvider } from 'contexts/SidebarProvider'
 
 const isDev = import.meta.env.DEV
 // const isDev = false
@@ -17,7 +18,9 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <QueryProvider>
         <AuthProvider isDev={isDev}>
-          <AppRoutes />
+          <SidebarProvider>
+            <AppRoutes />
+          </SidebarProvider>
         </AuthProvider>
       </QueryProvider>
     </BrowserRouter>

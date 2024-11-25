@@ -4,10 +4,10 @@ import Header from 'components/Header'
 
 function MainLayout() {
   return (
-    <main className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col">
       <Header />
       <Outlet />
-    </main>
+    </div>
   )
 }
 

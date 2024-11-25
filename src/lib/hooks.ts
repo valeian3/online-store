@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query'
 
 import { AuthContext } from 'contexts/AuthProvider'
+import { SidebarContext } from 'contexts/SidebarProvider'
 
 import { urlParam } from 'lib/constants'
 import { categories, products, search } from 'lib/api'
@@ -66,6 +67,14 @@ export const usePageTitle = (title?: string) => {
       window.document.title = title
     }
   }, [title])
+}
+
+export const useSidebar = () => {
+  const context = useContext(SidebarContext)
+  if (context === undefined) {
+    throw new Error('sidebar context must be used within a SidebarProvider')
+  }
+  return context
 }
 
 /** Query hooks */

@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import Input from 'components/Input'
+import Search from 'components/Search'
 import Sidebar from 'components/sidebar/Sidebar'
 import SidebarItem from 'components/sidebar/SidebarItem'
+import { useSidebar } from 'lib/hooks'
 
 function SidebarFilters({
   categories,
@@ -14,6 +16,7 @@ function SidebarFilters({
   }[]
 }) {
   const [searchParams, setSearchParams] = useSearchParams()
+  const { toggleSidebar } = useSidebar()
 
   const [priceFrom, setPriceFrom] = useState<string>(
     searchParams.get('priceFrom') || ''
@@ -47,6 +50,7 @@ function SidebarFilters({
     newSearchParams.set('priceTo', priceTo)
 
     setSearchParams(newSearchParams)
+    toggleSidebar(false)
   }
 
   const handleClearFilters = () => {
@@ -59,6 +63,7 @@ function SidebarFilters({
     setPriceFrom('')
     setPriceTo('')
     setSearchParams(newSearchParams)
+    toggleSidebar(false)
   }
 
   const hasFilters =
@@ -68,6 +73,7 @@ function SidebarFilters({
 
   return (
     <Sidebar>
+      <Search className="m-4 grow tablet:hidden" />
       <div className="py-3 px-4 bg-gray-200 flex items-center justify-between">
         <h4 className="text-lg font-semibold text-primary-600 flex items-center justify-start">
           <svg
@@ -156,14 +162,16 @@ function SidebarFilters({
             </svg>
             Categories
           </h4>
-          {categories.map((item, index) => (
-            <SidebarItem
-              key={index}
-              label={item.categoryName}
-              numOfItems={item.numOfProductsInCategory}
-              handleClick={handleSetUrlParam}
-            />
-          ))}
+          <ul>
+            {categories.map((item, index) => (
+              <SidebarItem
+                key={index}
+                label={item.categoryName}
+                numOfItems={item.numOfProductsInCategory}
+                handleClick={handleSetUrlParam}
+              />
+            ))}
+          </ul>
         </>
       )}
     </Sidebar>
