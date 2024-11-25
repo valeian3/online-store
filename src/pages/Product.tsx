@@ -1,17 +1,32 @@
+import { useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { extractProductId } from 'lib/utils'
-import { usePageTitle, useProduct } from 'lib/hooks'
+import { useLocalStorage, usePageTitle, useProduct } from 'lib/hooks'
 
 import Breadcrumbs from 'components/Breadcrumbs'
+
+import type { IProduct } from 'lib/types'
 
 import { Heart } from 'lucide-react'
 
 function Product() {
   const { productName = '' } = useParams<{ productName: string }>()
+  const [wishlist, setWishlist] = useLocalStorage<IProduct[]>('wishlist', [])
   const productId = extractProductId(productName)
   const { data, isLoading, isError } = useProduct(productId)
   usePageTitle(data?.title)
+
+  const handleAddToWishlist = useCallback(
+    (product: IProduct) => {
+      if (!wishlist.some((wishlistItem) => wishlistItem.id === product.id)) {
+        setWishlist([...wishlist, product])
+      } else {
+        alert(`${product.title} already in the wishlist`)
+      }
+    },
+    [setWishlist, wishlist]
+  )
 
   if (isLoading) return <>fetching product data...</>
   if (isError || !data) return <>error fetching product data</>
@@ -38,10 +53,14 @@ function Product() {
             ${price.toFixed(2)}
           </p>
           <div className="flex justify-start items-center gap-4">
-            <button className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-700 transition duration-200">
+            <button
+              className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled
+            >
               Add to Cart
             </button>
             <Heart
+              onClick={() => handleAddToWishlist(data)}
               size={40}
               className="text-gray-400 rounded-md p-2 hover:text-red-400 hover:bg-gray-100 tablet:block"
             />

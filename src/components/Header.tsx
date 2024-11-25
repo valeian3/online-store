@@ -14,6 +14,14 @@ function Header() {
     navigate(`login`)
   }
 
+  const handleOpenCartPage = () => {
+    navigate(`cart`)
+  }
+
+  const handleOpenWishlistPage = () => {
+    navigate(`wishlist`)
+  }
+
   return (
     <header className="h-24 z-10 px-6 py-4 shadow-md bg-white">
       <nav className="h-full flex justify-between items-center">
@@ -45,10 +53,12 @@ function Header() {
 
         <div className="flex">
           <Heart
+            onClick={handleOpenWishlistPage}
             size={40}
             className="text-gray-400 rounded-md p-2 hover:text-red-400 hover:bg-gray-100 tablet:block"
           />
           <ShoppingCart
+            onClick={handleOpenCartPage}
             size={40}
             className="text-gray-400 rounded-md p-2 hover:text-yellow-500 hover:bg-gray-100 tablet:block"
           />

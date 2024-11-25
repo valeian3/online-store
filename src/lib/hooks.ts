@@ -8,6 +8,7 @@ import {
 
 import { AuthContext } from 'contexts/AuthProvider'
 import { SidebarContext } from 'contexts/SidebarProvider'
+import { FeatureFlagsContext } from 'contexts/FeatureFlagsProvider'
 
 import { urlParam } from 'lib/constants'
 import { categories, products, search } from 'lib/api'
@@ -27,6 +28,16 @@ export const useAuth = () => {
   const context = useContext(AuthContext)
   if (!context) {
     throw new Error('auth context must be used within an AuthProvider')
+  }
+  return context
+}
+
+export const useFeatureFlags = () => {
+  const context = useContext(FeatureFlagsContext)
+  if (!context) {
+    throw new Error(
+      'features flag context must be used within an FeatureFlagsProvider'
+    )
   }
   return context
 }

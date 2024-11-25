@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { formatProductName } from 'lib/utils'
@@ -9,9 +9,13 @@ import { Heart } from 'lucide-react'
 
 interface ProductCardProps {
   product: IProduct
+  handleAddToWishlist: (product: IProduct) => void
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: FC<ProductCardProps> = ({
+  product,
+  handleAddToWishlist,
+}) => {
   const navigate = useNavigate()
   const { categoryName = '' } = useParams<{ categoryName: string }>()
 
@@ -45,6 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         <div className="w-full flex justify-between items-center">
           <Heart
+            onClick={() => handleAddToWishlist(product)}
             size={40}
             className="text-gray-400 rounded-md p-2 hover:text-red-400 hover:bg-gray-100 tablet:block"
           />

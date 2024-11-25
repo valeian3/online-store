@@ -9,20 +9,23 @@ import AppRoutes from 'routes/AppRoutes'
 import { AuthProvider } from 'contexts/AuthProvider'
 import QueryProvider from 'contexts/QueryProvider'
 import { SidebarProvider } from 'contexts/SidebarProvider'
+import { FeatureFlagsProvider } from 'contexts/FeatureFlagsProvider'
 
 const isDev = import.meta.env.DEV
 // const isDev = false
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <QueryProvider>
-        <AuthProvider isDev={isDev}>
-          <SidebarProvider>
-            <AppRoutes />
-          </SidebarProvider>
-        </AuthProvider>
-      </QueryProvider>
-    </BrowserRouter>
+    <FeatureFlagsProvider>
+      <BrowserRouter>
+        <QueryProvider>
+          <AuthProvider isDev={isDev}>
+            <SidebarProvider>
+              <AppRoutes />
+            </SidebarProvider>
+          </AuthProvider>
+        </QueryProvider>
+      </BrowserRouter>
+    </FeatureFlagsProvider>
   </StrictMode>
 )
