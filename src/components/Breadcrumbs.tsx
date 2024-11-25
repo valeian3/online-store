@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 
+import { House, ArrowRight } from 'lucide-react'
+
 const Breadcrumbs: React.FC = () => {
   const location = useLocation()
   const { categoryName, productName } = useParams()
@@ -35,18 +37,10 @@ const Breadcrumbs: React.FC = () => {
     <nav className="flex items-center space-x-2 text-sm">
       {isNotLandingPage && (
         <Link to="/" className="text-blue-500 hover:text-blue-700">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-5 h-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
-          </svg>
+          <House
+            size={34}
+            className="text-gray-400 rounded-md p-2 hover:text-primary-500 hover:bg-gray-100"
+          />
         </Link>
       )}
       {breadcrumbs.map((breadcrumb, index) => {
@@ -56,13 +50,13 @@ const Breadcrumbs: React.FC = () => {
 
         return (
           <React.Fragment key={index}>
-            <span className="text-gray-500">{'>'}</span>
+            <ArrowRight size={30} className="text-gray-400 rounded-md p-2" />
             {isLastBreadcrumb ? (
               <span className="text-gray-400">{breadcrumb.label}</span>
             ) : (
               <Link
                 to={breadcrumb.path}
-                className="text-blue-500 hover:text-blue-700"
+                className="text-primary-500 p-2 rounded-md hover:text-primary-700 hover:bg-gray-100"
               >
                 {breadcrumb.label}
               </Link>

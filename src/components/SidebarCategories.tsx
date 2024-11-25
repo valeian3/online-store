@@ -4,6 +4,8 @@ import Search from 'components/Search'
 import Sidebar from 'components/sidebar/Sidebar'
 import SidebarItem from 'components/sidebar/SidebarItem'
 
+import { ChartBarStacked } from 'lucide-react'
+
 function SidebarCategories() {
   const { data, isLoading, isError } = useCategoryList()
 
@@ -14,18 +16,10 @@ function SidebarCategories() {
     <Sidebar>
       <Search className="m-4 grow tablet:hidden" />
       <h4 className="py-3 px-4 text-lg font-semibold text-primary-600 uppercase bg-gray-200 flex items-center justify-start">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 mr-2"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" />
-        </svg>
+        <ChartBarStacked
+          size={40}
+          className="text-primary-500 rounded-md p-2"
+        />
         Categories
       </h4>
       <ul>

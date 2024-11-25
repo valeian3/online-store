@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
+import { useSidebar } from 'lib/hooks'
+
 import Input from 'components/Input'
 import Search from 'components/Search'
 import Sidebar from 'components/sidebar/Sidebar'
 import SidebarItem from 'components/sidebar/SidebarItem'
-import { useSidebar } from 'lib/hooks'
+
+import { ChartBarStacked, Filter, X } from 'lucide-react'
 
 function SidebarFilters({
   categories,
@@ -76,40 +79,17 @@ function SidebarFilters({
       <Search className="m-4 grow tablet:hidden" />
       <div className="py-3 px-4 bg-gray-200 flex items-center justify-between">
         <h4 className="text-lg font-semibold text-primary-600 flex items-center justify-start">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-5 h-5 mr-2"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M3 4h18M8 10h8M9 14h6L12 20l-3-6H9z" />
-          </svg>
+          <Filter size={40} className="text-primary-500 rounded-md p-2" />
           FILTERS
         </h4>
 
         {hasFilters && (
           <button
             onClick={handleClearFilters}
-            className="flex items-center bg-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full hover:bg-gray-400"
+            className="flex items-center bg-gray-300 text-gray-700 text-xs px-1 py-0.5 rounded-full hover:bg-gray-400"
           >
             Clear Filters
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-3 h-3 ml-1"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
+            <X size={14} className="text-gray-500 rounded-md" />
           </button>
         )}
       </div>
@@ -148,18 +128,10 @@ function SidebarFilters({
       {categories && (
         <>
           <h4 className="py-3 px-4 text-lg font-semibold text-primary-600 uppercase bg-gray-200 flex items-center justify-start">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5 mr-2"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" />
-            </svg>
+            <ChartBarStacked
+              size={40}
+              className="text-primary-500 rounded-md p-2"
+            />
             Categories
           </h4>
           <ul>

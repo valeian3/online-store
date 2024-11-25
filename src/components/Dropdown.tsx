@@ -1,5 +1,7 @@
 import { FC, ChangeEvent } from 'react'
 
+import { ArrowDownUp } from 'lucide-react'
+
 interface DropdownProps {
   id?: string
   label?: string
@@ -31,21 +33,10 @@ const Dropdown: FC<DropdownProps> = ({
             </option>
           ))}
         </select>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.2"
-          stroke="currentColor"
-          className="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700"
-          aria-label="dropdown icon"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
-          />
-        </svg>
+        <ArrowDownUp
+          size={18}
+          className="text-gray-400 rounded-md absolute top-2.5 right-2.5"
+        />
       </div>
     </div>
   )
