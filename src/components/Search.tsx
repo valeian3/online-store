@@ -15,7 +15,7 @@ function Search({ className = '' }: { className: string }) {
   const handleSearch = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     toggleSidebar(false)
-    navigate(`search/?q=${searchValue}`)
+    navigate(`/search/?q=${searchValue}`, { replace: true })
   }
 
   return (
