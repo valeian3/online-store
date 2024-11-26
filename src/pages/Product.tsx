@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { extractProductId } from 'lib/utils'
-import { useLocalStorage, usePageTitle, useProduct } from 'lib/hooks'
+import { usePageTitle, useProduct, useStorage } from 'lib/hooks'
 
 import Breadcrumbs from 'components/Breadcrumbs'
 
@@ -12,7 +12,8 @@ import { Heart } from 'lucide-react'
 
 function Product() {
   const { productName = '' } = useParams<{ productName: string }>()
-  const [wishlist, setWishlist] = useLocalStorage<IProduct[]>('wishlist', [])
+
+  const { wishlist, setWishlist } = useStorage()
   const productId = extractProductId(productName)
   const { data, isLoading, isError } = useProduct(productId)
   usePageTitle(data?.title)
@@ -25,7 +26,8 @@ function Product() {
         alert(`${product.title} already in the wishlist`)
       }
     },
-    [setWishlist, wishlist]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [wishlist]
   )
 
   if (isLoading) return <>fetching product data...</>

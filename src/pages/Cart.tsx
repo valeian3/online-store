@@ -5,7 +5,6 @@ import { useFeatureFlags } from 'lib/hooks'
 const Cart: FC = () => {
   const { cartFeature } = useFeatureFlags()
 
-  console.log(cartFeature)
   return (
     <div className="p-8">
       <h2 className="text-2xl font-medium mb-6">Your Cart</h2>

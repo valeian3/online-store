@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { useAuth, usePageTitle } from 'lib/hooks'
+import { usePageTitle } from 'lib/hooks'
 
 function Register() {
   usePageTitle('Register')
   const navigate = useNavigate()
-  const { register } = useAuth()
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -14,17 +13,7 @@ function Register() {
   function handleRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    register({ username: username, password: password })
-      .then((res) => {
-        if (res.status === 201) {
-          setUsername('')
-          setPassword('')
-          navigate('/login', { replace: true })
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    navigate('/login', { replace: true })
   }
 
   return (

@@ -6,24 +6,21 @@ import './index.css'
 import AppRoutes from 'routes/AppRoutes'
 
 // contexts
-import { AuthProvider } from 'contexts/AuthProvider'
-import QueryProvider from 'contexts/QueryProvider'
+import { QueryProvider } from 'contexts/QueryProvider'
+import { StorageProvider } from 'contexts/StorageProvider'
 import { SidebarProvider } from 'contexts/SidebarProvider'
 import { FeatureFlagsProvider } from 'contexts/FeatureFlagsProvider'
-
-const isDev = import.meta.env.DEV
-// const isDev = false
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <FeatureFlagsProvider>
       <BrowserRouter>
         <QueryProvider>
-          <AuthProvider isDev={isDev}>
+          <StorageProvider>
             <SidebarProvider>
               <AppRoutes />
             </SidebarProvider>
-          </AuthProvider>
+          </StorageProvider>
         </QueryProvider>
       </BrowserRouter>
     </FeatureFlagsProvider>

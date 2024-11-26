@@ -12,7 +12,7 @@ function Sidebar({ children }: { children: ReactNode }) {
       <nav
         className={`h-[calc(100vh-96px)] tablet:w-56 flex flex-col bg-white border-r`}
       >
-        <ul className="flex-1 overflow-y-auto">{children}</ul>
+        <div className="flex-1 overflow-y-auto">{children}</div>
       </nav>
     </aside>
   )

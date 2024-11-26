@@ -1,19 +1,18 @@
 import React, { FC, useCallback } from 'react'
 
-import { useLocalStorage } from 'lib/hooks'
+import { useStorage } from 'lib/hooks'
 
 import WishlistItem from 'components/WishlistItem'
 
-import type { IProduct } from 'lib/types'
-
 const Wishlist: FC = () => {
-  const [wishlist, setWishlist] = useLocalStorage<IProduct[]>('wishlist', [])
+  const { wishlist, setWishlist } = useStorage()
 
   const handleRemoveProduct = useCallback(
     (id: number) => {
       setWishlist(wishlist.filter((product) => product.id !== id))
     },
-    [setWishlist, wishlist]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [wishlist]
   )
 
   return (

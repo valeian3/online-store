@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { formatProductName } from 'lib/utils'
@@ -6,24 +6,35 @@ import { formatProductName } from 'lib/utils'
 import type { IProduct } from 'lib/types'
 
 import { Heart } from 'lucide-react'
+import { useStorage } from 'lib/hooks'
 
 interface ProductCardProps {
   product: IProduct
-  handleAddToWishlist: (product: IProduct) => void
 }
 
-const ProductCard: FC<ProductCardProps> = ({
-  product,
-  handleAddToWishlist,
-}) => {
+const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate()
   const { categoryName = '' } = useParams<{ categoryName: string }>()
+
+  const { wishlist, setWishlist } = useStorage()
 
   const handleCardClick = (productId: number, productName: string) => {
     const formattedName = formatProductName(productName, productId)
     if (categoryName === '') navigate(`/search/${formattedName}`)
     else navigate(`/${categoryName}/${formattedName}`)
   }
+
+  const handleAddToWishlist = useCallback(
+    (product: IProduct) => {
+      if (!wishlist.some((wishlistItem) => wishlistItem.id === product.id)) {
+        setWishlist([...wishlist, product])
+      } else {
+        alert(`${product.title} already in the wishlist`)
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [wishlist]
+  )
 
   return (
     <div className="bg-white rounded-lg shadow-md flex flex-col">

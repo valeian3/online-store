@@ -32,7 +32,7 @@ const ReactQueryDevtoolsProduction = lazy(() =>
 
 export const QueryContext = createContext<undefined>(undefined)
 
-const QueryProvider = ({ children }: PropsWithChildren) => {
+export const QueryProvider = ({ children }: PropsWithChildren) => {
   const [showDevtools, setShowDevtools] = useState<boolean>(false)
 
   useEffect(() => {
@@ -55,5 +55,3 @@ const QueryProvider = ({ children }: PropsWithChildren) => {
     </QueryContext.Provider>
   )
 }
-
-export default QueryProvider

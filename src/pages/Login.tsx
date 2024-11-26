@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
-import { useAuth, usePageTitle } from 'lib/hooks'
+import { usePageTitle } from 'lib/hooks'
 
 function Login() {
   usePageTitle('Login')
-  const { signin } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -17,15 +16,7 @@ function Login() {
   function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    signin({ username: username, password: password }).then(() => {
-      // Send them back to the page they tried to visit when they were
-      // redirected to the login page. Use { replace: true } so we don't create
-      // another entry in the history stack for the login page.  This means that
-      // when they get to the protected page and click the back button, they
-      // won't end up back on the login page, which is also really nice for the
-      // user experience.
-      navigate(from, { replace: true })
-    })
+    navigate(from, { replace: true })
   }
 
   return (
