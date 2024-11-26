@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
 import { useCategoryListFilter, useSidebar } from 'lib/hooks'
@@ -11,8 +11,9 @@ import SidebarItem from 'components/sidebar/SidebarItem'
 import { ChartBarStacked, Filter, X } from 'lucide-react'
 
 function SidebarFilters() {
-  const params = useParams()
+  const { categoryName } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
+  const IS_CATEGORY_PAGE = useMemo(() => Boolean(categoryName), [categoryName])
 
   const { toggleSidebar } = useSidebar()
   const categories = useCategoryListFilter()
@@ -121,7 +122,7 @@ function SidebarFilters() {
         </button>
       </form>
 
-      {!params.categoryName && categories && (
+      {!IS_CATEGORY_PAGE && categories && (
         <>
           <h4 className="py-3 px-4 text-lg font-semibold text-primary-600 uppercase bg-gray-200 flex items-center justify-start">
             <ChartBarStacked
