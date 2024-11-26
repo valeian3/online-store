@@ -3,9 +3,6 @@ import { useParams } from 'react-router-dom'
 import Pagination from 'components/Pagination'
 import ProductList from 'components/ProductList'
 import SortDropdown from 'components/SortDropdown'
-import SidebarFilters from 'components/SidebarFilters'
-
-import SidebarLayout from 'layout/SidebarLayout'
 
 import { usePageTitle, useProductListByCategory } from 'lib/hooks'
 
@@ -18,7 +15,7 @@ export default function CategoryProducts() {
   if (isError || !data) return <>error fetching category products data</>
 
   return (
-    <SidebarLayout sidebar={<SidebarFilters />}>
+    <>
       <div>
         <div className="grow">
           <h1 className="text-2xl font-bold mb-6">Category: {categoryName}</h1>
@@ -27,6 +24,6 @@ export default function CategoryProducts() {
         </div>
         <Pagination totalPages={data.total} />
       </div>
-    </SidebarLayout>
+    </>
   )
 }

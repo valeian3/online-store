@@ -16,7 +16,7 @@ const Wishlist: FC = () => {
   )
 
   return (
-    <div className="p-8">
+    <>
       <h2 className="text-2xl font-medium mb-6">Your Wishlist</h2>
 
       {wishlist.length === 0 ? (
@@ -35,7 +35,7 @@ const Wishlist: FC = () => {
           ))}
         </ul>
       )}
-    </div>
+    </>
   )
 }
 

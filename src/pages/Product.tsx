@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom'
 import { extractProductId } from 'lib/utils'
 import { usePageTitle, useProduct, useStorage } from 'lib/hooks'
 
-import Breadcrumbs from 'components/Breadcrumbs'
-
 import type { IProduct } from 'lib/types'
 
 import { Heart } from 'lucide-react'
@@ -36,9 +34,7 @@ function Product() {
   const { title, description, price, thumbnail } = data
 
   return (
-    <div className="p-4 w-full grow">
-      <Breadcrumbs />
-
+    <div className="w-full grow">
       <h1 className="text-3xl font-semibold mb-4">{title}</h1>
 
       <div className="flex flex-col md:flex-row gap-8">

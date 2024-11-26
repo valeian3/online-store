@@ -6,7 +6,7 @@ const Cart: FC = () => {
   const { cartFeature } = useFeatureFlags()
 
   return (
-    <div className="p-8">
+    <>
       <h2 className="text-2xl font-medium mb-6">Your Cart</h2>
       <div className="w-full flex justify-center">
         {cartFeature ? (
@@ -15,7 +15,7 @@ const Cart: FC = () => {
           <h3 className="text-xl font-medium">This feature is not available</h3>
         )}
       </div>
-    </div>
+    </>
   )
 }
 

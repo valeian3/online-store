@@ -4,21 +4,16 @@ import { useNavigate } from 'react-router-dom'
 import {
   usePageTitle,
   useApiSearchParams,
-  useCategoryListFilter,
   useProductListSearchWithFilters,
 } from 'lib/hooks'
-
-import SidebarLayout from 'layout/SidebarLayout'
 
 import Pagination from 'components/Pagination'
 import ProductList from 'components/ProductList'
 import SortDropdown from 'components/SortDropdown'
-import SidebarFilters from 'components/SidebarFilters'
 
 function SearchProducts() {
   const navigate = useNavigate()
 
-  const categories = useCategoryListFilter()
   const { data, isLoading, isError } = useProductListSearchWithFilters()
 
   // TODO: improve setting title
@@ -36,7 +31,7 @@ function SearchProducts() {
   if (isError || !data) return <>error fetching category products data</>
 
   return (
-    <SidebarLayout sidebar={<SidebarFilters categories={categories} />}>
+    <>
       <div className="grow">
         <h1 className="text-2xl font-bold mb-6">
           Search product: {memoizedSearchValue}
@@ -46,7 +41,7 @@ function SearchProducts() {
       </div>
 
       <Pagination totalPages={data.total} />
-    </SidebarLayout>
+    </>
   )
 }
 

@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 
 // layout
-import MainLayout from 'layout/MainLayout'
+import Layout from 'layout/Layout'
 
 // pages
 import Landing from 'pages/Landing'
@@ -17,7 +17,7 @@ import PageNotFound from 'pages/PageNotFound'
 function AppRoutes() {
   return (
     <Routes>
-      <Route element={<MainLayout />}>
+      <Route element={<Layout />}>
         <Route path="/" element={<Landing />} />
 
         <Route path="/search" element={<SearchProducts />} />

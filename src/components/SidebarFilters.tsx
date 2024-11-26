@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 
-import { useSidebar } from 'lib/hooks'
+import { useCategoryListFilter, useSidebar } from 'lib/hooks'
 
 import Input from 'components/Input'
 import Search from 'components/Search'
@@ -10,16 +10,12 @@ import SidebarItem from 'components/sidebar/SidebarItem'
 
 import { ChartBarStacked, Filter, X } from 'lucide-react'
 
-function SidebarFilters({
-  categories,
-}: {
-  categories?: {
-    categoryName: string
-    numOfProductsInCategory: number
-  }[]
-}) {
+function SidebarFilters() {
+  const params = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
+
   const { toggleSidebar } = useSidebar()
+  const categories = useCategoryListFilter()
 
   const [priceFrom, setPriceFrom] = useState<string>(
     searchParams.get('priceFrom') || ''
@@ -125,7 +121,7 @@ function SidebarFilters({
         </button>
       </form>
 
-      {categories && (
+      {!params.categoryName && categories && (
         <>
           <h4 className="py-3 px-4 text-lg font-semibold text-primary-600 uppercase bg-gray-200 flex items-center justify-start">
             <ChartBarStacked
