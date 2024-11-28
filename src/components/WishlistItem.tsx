@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import type { IProduct } from 'lib/types'
+import type { IProduct } from 'types/types'
 
 interface WishlistItemProps {
   product: IProduct

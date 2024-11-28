@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useMemo } from 'react'
 
-import { useLocalStorage } from 'lib/hooks'
+import { useLocalStorage } from 'hooks/hooks'
 
-import type { IProduct } from 'lib/types'
+import type { IProduct } from 'types/types'
 
 interface StorageContextProps {
   wishlist: IProduct[]

@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
-import { useCategoryListFilter, useSidebar } from 'lib/hooks'
+import { useCategoryListFilter, useSidebar } from 'hooks/hooks'
 
-import Input from 'components/Input'
+import Input from 'components/shared-ui/Input'
 import Search from 'components/Search'
 import Sidebar from 'components/sidebar/Sidebar'
 import SidebarItem from 'components/sidebar/SidebarItem'
@@ -99,8 +99,9 @@ function SidebarFilters() {
         <Input
           id="price-from"
           name="priceFrom"
-          placeholder="min"
           type="number"
+          placeholder="min"
+          min="0"
           required
           value={priceFrom}
           onChange={handleChange}
@@ -108,8 +109,9 @@ function SidebarFilters() {
         <Input
           id="price-to"
           name="priceTo"
-          placeholder="max"
           type="number"
+          placeholder="max"
+          min="0"
           required
           value={priceTo}
           onChange={handleChange}

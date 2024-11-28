@@ -1,4 +1,4 @@
-import { useCategoryList } from 'lib/hooks'
+import { useCategoryList } from 'hooks/hooks'
 
 import Search from 'components/Search'
 import Sidebar from 'components/sidebar/Sidebar'

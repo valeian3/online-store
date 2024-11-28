@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-import { numberOfItemsPerPage } from 'lib/constants'
+import { numberOfItemsPerPage } from 'constants/constants'
 
 import {
   ArrowRightToLine,

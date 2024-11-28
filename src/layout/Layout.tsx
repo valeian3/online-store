@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { Outlet, useLocation, useParams } from 'react-router-dom'
 
-import { useSidebar } from 'lib/hooks'
+import { useSidebar } from 'hooks/hooks'
 
 import Header from 'components/Header'
 import Breadcrumbs from 'components/Breadcrumbs'

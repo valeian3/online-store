@@ -10,10 +10,14 @@ import { SidebarContext } from 'contexts/SidebarProvider'
 import { StorageContext } from 'contexts/StorageProvider'
 import { FeatureFlagsContext } from 'contexts/FeatureFlagsProvider'
 
-import { urlParam } from 'lib/constants'
-import { categories, products, search } from 'lib/api'
-import { excludeKeys, filterProducts } from 'lib/utils'
-import { categoryKeys, productKeys, searchKeys } from 'lib/query-key-factory'
+import { urlParam } from 'constants/constants'
+import { categories, products, search } from 'services/api'
+import { excludeKeys, filterProducts } from 'utils/utils'
+import {
+  categoryKeys,
+  productKeys,
+  searchKeys,
+} from 'services/query-key-factory'
 
 import type {
   IProduct,
@@ -22,7 +26,7 @@ import type {
   IProductListByCategory,
   IProductListSearch,
   IProductListSearchWithFilters,
-} from 'lib/types'
+} from 'types/types'
 
 export const useFeatureFlags = () => {
   const context = useContext(FeatureFlagsContext)

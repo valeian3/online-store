@@ -1,4 +1,4 @@
-import { useSidebar } from 'lib/hooks'
+import { useSidebar } from 'hooks/hooks'
 import { Link } from 'react-router-dom'
 
 function SidebarItem({

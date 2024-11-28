@@ -4,7 +4,7 @@ import Pagination from 'components/Pagination'
 import ProductList from 'components/ProductList'
 import SortDropdown from 'components/SortDropdown'
 
-import { usePageTitle, useProductListByCategory } from 'lib/hooks'
+import { usePageTitle, useProductListByCategory } from 'hooks/hooks'
 
 export default function CategoryProducts() {
   const { categoryName = '' } = useParams<{ categoryName: string }>()

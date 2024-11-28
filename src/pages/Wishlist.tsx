@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react'
 
-import { useStorage } from 'lib/hooks'
+import { useStorage } from 'hooks/hooks'
 
 import WishlistItem from 'components/WishlistItem'
 

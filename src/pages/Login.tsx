@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
-import { usePageTitle } from 'lib/hooks'
+import { usePageTitle } from 'hooks/hooks'
 
 function Login() {
   usePageTitle('Login')

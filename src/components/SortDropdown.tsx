@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { useSortParams } from 'lib/hooks'
-import { sortOptions } from 'lib/constants'
+import { useSortParams } from 'hooks/hooks'
+import { sortOptions } from 'constants/constants'
 
 import Dropdown from 'components/Dropdown'
 

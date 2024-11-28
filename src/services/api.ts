@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { numberOfItemsPerPage } from 'lib/constants'
+import { numberOfItemsPerPage } from 'constants/constants'
 
 import type {
   IProduct,
@@ -8,7 +8,7 @@ import type {
   IProductListSearch,
   IProductListByCategory,
   IProductListSearchWithFilters,
-} from 'lib/types'
+} from 'types/types'
 
 const BASE_URL = import.meta.env.VITE_API_URL_DUMMY_JSON
 

@@ -5,7 +5,7 @@ import {
   usePageTitle,
   useApiSearchParams,
   useProductListSearchWithFilters,
-} from 'lib/hooks'
+} from 'hooks/hooks'
 
 import Pagination from 'components/Pagination'
 import ProductList from 'components/ProductList'

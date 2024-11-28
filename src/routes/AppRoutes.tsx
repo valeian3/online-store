@@ -1,39 +1,45 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 // layout
 import Layout from 'layout/Layout'
 
 // pages
-import Landing from 'pages/Landing'
-import CategoryProducts from 'pages/CategoryProducts'
-import Product from 'pages/Product'
-import SearchProducts from 'pages/SearchProducts'
-import Cart from 'pages/Cart'
-import Wishlist from 'pages/Wishlist'
-import Login from 'pages/Login'
-import Register from 'pages/Register'
-import PageNotFound from 'pages/PageNotFound'
+const Landing = lazy(() => import('pages/Landing'))
+const CategoryProducts = lazy(() => import('pages/CategoryProducts'))
+const Product = lazy(() => import('pages/Product'))
+const SearchProducts = lazy(() => import('pages/SearchProducts'))
+const Cart = lazy(() => import('pages/Cart'))
+const Wishlist = lazy(() => import('pages/Wishlist'))
+const Login = lazy(() => import('pages/Login'))
+const Register = lazy(() => import('pages/Register'))
+const PageNotFound = lazy(() => import('pages/PageNotFound'))
+
+// component
+import Loading from 'components/Loading'
 
 function AppRoutes() {
   return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Landing />} />
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Landing />} />
 
-        <Route path="/search" element={<SearchProducts />} />
-        <Route path="/search/:productName" element={<Product />} />
+          <Route path="/search" element={<SearchProducts />} />
+          <Route path="/search/:productName" element={<Product />} />
 
-        <Route path="/:categoryName" element={<CategoryProducts />} />
-        <Route path="/:categoryName/:productName" element={<Product />} />
+          <Route path="/:categoryName" element={<CategoryProducts />} />
+          <Route path="/:categoryName/:productName" element={<Product />} />
 
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Route>
-      <Route path="/*" element={<PageNotFound />} />
-    </Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+        <Route path="/*" element={<PageNotFound />} />
+      </Routes>
+    </Suspense>
   )
 }
 

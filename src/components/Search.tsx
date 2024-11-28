@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useSidebar } from 'lib/hooks'
+import { useSidebar } from 'hooks/hooks'
 
 import { Search as SearchIcon } from 'lucide-react'
 

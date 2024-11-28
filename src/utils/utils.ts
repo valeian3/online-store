@@ -1,4 +1,4 @@
-import type { IProductListByCategory } from 'lib/types'
+import type { IProductListByCategory } from 'types/types'
 
 // TODO: instead of 0 return null, test out query with null
 // Function to extract product ID from formatted name

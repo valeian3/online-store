@@ -1,11 +1,3 @@
-import { IUserWithRoles } from './types'
-
-export const devUser: IUserWithRoles = {
-  id: 0,
-  username: 'dev',
-  roles: ['developer'],
-}
-
 export const urlParam = {
   redirectFrom: 'redirect-from',
   page: 'page',

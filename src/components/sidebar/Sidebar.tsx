@@ -1,4 +1,4 @@
-import { useSidebar } from 'lib/hooks'
+import { useSidebar } from 'hooks/hooks'
 import { ReactNode } from 'react'
 
 function Sidebar({ children }: { children: ReactNode }) {

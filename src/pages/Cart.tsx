@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { useFeatureFlags } from 'lib/hooks'
+import { useFeatureFlags } from 'hooks/hooks'
 
 const Cart: FC = () => {
   const { cartFeature } = useFeatureFlags()

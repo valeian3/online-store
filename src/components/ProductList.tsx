@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import ProductCard from 'components/ProductCard'
 
-import type { IProduct } from 'lib/types'
+import type { IProduct } from 'types/types'
 
 interface ProductListProps {
   list: IProduct[]

@@ -1,5 +1,9 @@
 import { FC, ChangeEvent } from 'react'
 
+import Label from 'components/shared-ui/Label'
+import Select from 'components/shared-ui/Select'
+import Option from 'components/shared-ui/Option'
+
 import { ArrowDownUp } from 'lucide-react'
 
 interface DropdownProps {
@@ -19,20 +23,15 @@ const Dropdown: FC<DropdownProps> = ({
 }) => {
   return (
     <div className="w-fit flex items-center gap-4">
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && <Label htmlFor={id}>{label}</Label>}
       <div className="relative">
-        <select
-          id={id}
-          value={selectedValue}
-          onChange={handleChange}
-          className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
-        >
+        <Select id={id} value={selectedValue} onChange={handleChange}>
           {sortOptions.map((item, index) => (
-            <option key={index} value={item.value}>
+            <Option key={index} value={item.value}>
               {item.label}
-            </option>
+            </Option>
           ))}
-        </select>
+        </Select>
         <ArrowDownUp
           size={18}
           className="text-gray-400 rounded-md absolute top-2.5 right-2.5"

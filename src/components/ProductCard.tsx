@@ -1,12 +1,11 @@
-import { FC, useCallback } from 'react'
+import { FC } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { formatProductName } from 'lib/utils'
+import { formatProductName } from 'utils/utils'
 
-import type { IProduct } from 'lib/types'
+import type { IProduct } from 'types/types'
 
-import { Heart } from 'lucide-react'
-import { useStorage } from 'lib/hooks'
+import AddToWishlist from 'components/AddToWishlist'
 
 interface ProductCardProps {
   product: IProduct
@@ -16,25 +15,11 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate()
   const { categoryName = '' } = useParams<{ categoryName: string }>()
 
-  const { wishlist, setWishlist } = useStorage()
-
   const handleCardClick = (productId: number, productName: string) => {
     const formattedName = formatProductName(productName, productId)
     if (categoryName === '') navigate(`/search/${formattedName}`)
     else navigate(`/${categoryName}/${formattedName}`)
   }
-
-  const handleAddToWishlist = useCallback(
-    (product: IProduct) => {
-      if (!wishlist.some((wishlistItem) => wishlistItem.id === product.id)) {
-        setWishlist([...wishlist, product])
-      } else {
-        alert(`${product.title} already in the wishlist`)
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [wishlist]
-  )
 
   return (
     <div className="bg-white rounded-lg shadow-md flex flex-col">
@@ -59,11 +44,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         </div>
 
         <div className="w-full flex justify-between items-center">
-          <Heart
-            onClick={() => handleAddToWishlist(product)}
-            size={40}
-            className="text-gray-400 rounded-md p-2 hover:text-red-400 hover:bg-gray-100 tablet:block"
-          />
+          <AddToWishlist product={product} />
           <p className="text-lg font-bold">${product.price}</p>
         </div>
       </div>
