@@ -22,6 +22,8 @@ Understanding how React + Vite work on client side and it's communication with D
 
 #### Setup and run in dev mode
 
+Setup env file, example is in root dir
+
 Clone the github repository:
 
 ```
