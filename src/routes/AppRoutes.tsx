@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 
 // layout
 import Layout from 'layout/Layout'
+import SidebarLayout from 'layout/SidebarLayout'
 
 // pages
 const Landing = lazy(() => import('pages/Landing'))
@@ -23,19 +24,26 @@ function AppRoutes() {
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Landing />} />
+          <Route element={<SidebarLayout sidebar="category" />}>
+            <Route path="/" element={<Landing />} />
+          </Route>
 
-          <Route path="/search" element={<SearchProducts />} />
-          <Route path="/search/:productName" element={<Product />} />
+          <Route element={<SidebarLayout sidebar="filter" />}>
+            <Route path="/search" element={<SearchProducts />} />
 
-          <Route path="/:categoryName" element={<CategoryProducts />} />
-          <Route path="/:categoryName/:productName" element={<Product />} />
+            <Route path="/:categoryName" element={<CategoryProducts />} />
+          </Route>
 
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/wishlist" element={<Wishlist />} />
+          <Route element={<SidebarLayout />}>
+            <Route path="/search/:productName" element={<Product />} />
+            <Route path="/:categoryName/:productName" element={<Product />} />
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
         </Route>
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
