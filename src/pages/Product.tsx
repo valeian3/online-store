@@ -20,24 +20,24 @@ function Product() {
 
   return (
     <div className="w-full grow">
-      <h1 className="text-3xl font-semibold mb-4">{title}</h1>
+      <h1 className="mb-4 text-3xl font-semibold">{title}</h1>
 
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="w-full h-full overflow-hidden bg-gray-100 rounded-sm">
+      <div className="flex flex-col gap-8 md:flex-row">
+        <div className="h-full w-full overflow-hidden rounded-sm bg-gray-100">
           <img
             src={thumbnail}
             alt={title}
-            className="max-w-full max-h-full object-contain mx-auto"
+            className="mx-auto max-h-full max-w-full object-contain"
           />
         </div>
         <div className="md:w-2/3">
           <p className="text-lg text-gray-700">{description}</p>
-          <p className="text-3xl font-semibold text-gray-900 mt-6 mb-12">
+          <p className="mb-12 mt-6 text-3xl font-semibold text-gray-900">
             ${price.toFixed(2)}
           </p>
-          <div className="flex justify-start items-center gap-4">
+          <div className="flex items-center justify-start gap-4">
             <button
-              className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-lg bg-primary-500 px-6 py-2 text-white transition duration-200 hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!cartFeature}
             >
               Add to Cart
