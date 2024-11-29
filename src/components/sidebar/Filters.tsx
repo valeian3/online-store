@@ -4,13 +4,11 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { useCategoryListFilter, useSidebar } from 'hooks/hooks'
 
 import Input from 'components/shared-ui/Input'
-import Search from 'components/Search'
-import Sidebar from 'components/sidebar/Sidebar'
 import SidebarItem from 'components/sidebar/SidebarItem'
 
 import { ChartBarStacked, Filter, X } from 'lucide-react'
 
-function SidebarFilters() {
+function Filters() {
   const { categoryName } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
   const IS_CATEGORY_PAGE = useMemo(() => Boolean(categoryName), [categoryName])
@@ -72,29 +70,28 @@ function SidebarFilters() {
     searchParams.has('category')
 
   return (
-    <Sidebar>
-      <Search className="m-4 grow tablet:hidden" />
-      <div className="py-3 px-4 bg-gray-200 flex items-center justify-between">
-        <h4 className="text-lg font-semibold text-primary-600 flex items-center justify-start">
-          <Filter size={40} className="text-primary-500 rounded-md p-2" />
+    <div className="flex flex-col">
+      <div className="flex items-center justify-between bg-gray-200 px-4 py-3">
+        <h4 className="flex items-center justify-start text-lg font-semibold text-primary-600">
+          <Filter size={40} className="rounded-md p-2 text-primary-500" />
           FILTERS
         </h4>
 
         {hasFilters && (
           <button
             onClick={handleClearFilters}
-            className="flex items-center bg-gray-300 text-gray-700 text-xs px-1 py-0.5 rounded-full hover:bg-gray-400"
+            className="flex items-center rounded-full bg-gray-300 px-1 py-0.5 text-xs text-gray-700 hover:bg-gray-400"
           >
             Clear Filters
-            <X size={14} className="text-gray-500 rounded-md" />
+            <X size={14} className="rounded-md text-gray-500" />
           </button>
         )}
       </div>
 
-      <h4 className="font-semibold mx-4 my-2">Price</h4>
+      <h4 className="mx-4 my-2 font-semibold">Price</h4>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 px-4 mt-2 mb-4"
+        className="mb-4 mt-2 flex flex-col gap-4 px-4"
       >
         <Input
           id="price-from"
@@ -118,7 +115,7 @@ function SidebarFilters() {
         />
         <button
           type="submit"
-          className="py-2 px-4 bg-primary-600 text-white rounded hover:bg-primary-400"
+          className="rounded bg-primary-600 px-4 py-2 text-white hover:bg-primary-400"
         >
           Apply
         </button>
@@ -126,10 +123,10 @@ function SidebarFilters() {
 
       {!IS_CATEGORY_PAGE && categories && (
         <>
-          <h4 className="py-3 px-4 text-lg font-semibold text-primary-600 uppercase bg-gray-200 flex items-center justify-start">
+          <h4 className="flex items-center justify-start bg-gray-200 px-4 py-3 text-lg font-semibold uppercase text-primary-600">
             <ChartBarStacked
               size={40}
-              className="text-primary-500 rounded-md p-2"
+              className="rounded-md p-2 text-primary-500"
             />
             Categories
           </h4>
@@ -145,8 +142,8 @@ function SidebarFilters() {
           </ul>
         </>
       )}
-    </Sidebar>
+    </div>
   )
 }
 
-export default SidebarFilters
+export default Filters

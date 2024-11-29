@@ -31,8 +31,8 @@ function AddToWishlist({ product }: { product: IProduct }) {
   return (
     <Heart
       onClick={() => handleAddToWishlist(product)}
-      size={40}
-      className={`text-red-400 rounded-md p-2 transition-all duration-200 hover:fill-red-400 hover:bg-gray-100 tablet:block ${liked ? 'fill-red-400' : 'fill-none'}`}
+      size={28}
+      className={`text-red-400 hover:cursor-pointer ${liked ? 'fill-red-400' : 'fill-none'}`}
     />
   )
 }

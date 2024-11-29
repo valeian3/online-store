@@ -1,24 +1,25 @@
+import { FC } from 'react'
+
 import { useCategoryList } from 'hooks/hooks'
 
 import Search from 'components/Search'
-import Sidebar from 'components/sidebar/Sidebar'
 import SidebarItem from 'components/sidebar/SidebarItem'
 
 import { ChartBarStacked } from 'lucide-react'
 
-function SidebarCategories() {
+const Categories: FC = () => {
   const { data, isLoading, isError } = useCategoryList()
 
   if (isLoading) return <>fetching categories data...</>
   if (isError || !data) return <>error fetching categories data</>
 
   return (
-    <Sidebar>
+    <div className="flex flex-col">
       <Search className="m-4 grow tablet:hidden" />
-      <h4 className="py-3 px-4 text-lg font-semibold text-primary-600 uppercase bg-gray-200 flex items-center justify-start">
+      <h4 className="flex items-center justify-start bg-gray-200 px-4 py-3 text-lg font-semibold uppercase text-primary-600">
         <ChartBarStacked
           size={40}
-          className="text-primary-500 rounded-md p-2"
+          className="rounded-md p-2 text-primary-500"
         />
         Categories
       </h4>
@@ -27,8 +28,8 @@ function SidebarCategories() {
           <SidebarItem key={index} label={item} />
         ))}
       </ul>
-    </Sidebar>
+    </div>
   )
 }
 
-export default SidebarCategories
+export default Categories

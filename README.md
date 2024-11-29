@@ -20,6 +20,9 @@ Understanding how React + Vite work on client side and it's communication with D
 
 ### For developers
 
+Ensure you have **.env** file configured as shown in **.env.example**. For api url check **API section**
+Enabling feature flag for adding to cart **wont** give any functionality, it is only **presentational**.
+
 #### Setup and run in dev mode
 
 Clone the github repository:
